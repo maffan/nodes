@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author Marcus
  */
 @WebFilter(filterName = "Router", urlPatterns = {"/*"})
-public class Router implements Filter {
+public class HomeRouter implements Filter {
 // Leading "/" very important (from context root)
     public static final String TEMPLATE = "/WEB-INF/templates/template.jsp";
     private static final String RESOURCES

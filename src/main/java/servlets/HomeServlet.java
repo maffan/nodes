@@ -7,7 +7,7 @@ package servlets;
 
 import entities.Node;
 import entities.User;
-import filters.Router;
+import filters.HomeRouter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -42,7 +42,7 @@ NodeService nodeService;
             List<Node> nodes = user.getNodeList();
             request.setAttribute("user", user);
             request.setAttribute("nodes", nodes);
-            request.getRequestDispatcher(Router.TEMPLATE + "?partial=user").forward(request, response);
+            request.getRequestDispatcher(HomeRouter.TEMPLATE + "?partial=user").forward(request, response);
     }
 
 }

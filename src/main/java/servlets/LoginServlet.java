@@ -6,7 +6,7 @@
 package servlets;
 
 import entities.User;
-import filters.Router;
+import filters.HomeRouter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.inject.Inject;
@@ -30,7 +30,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher(Router.TEMPLATE + "?partial=login").forward(request, response);
+        request.getRequestDispatcher(HomeRouter.TEMPLATE + "?partial=login").forward(request, response);
     }
 
     @Override
