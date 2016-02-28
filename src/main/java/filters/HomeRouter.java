@@ -43,7 +43,7 @@ public class HomeRouter implements Filter {
             chain.doFilter(req, res);
         } 
         else if (path.equals("/") || path.equals("/home")) {
-            chain.doFilter(req, res);
+            r.getRequestDispatcher("/home").forward(req, res);
         } 
         else {
             chain.doFilter(req, res);
