@@ -18,12 +18,12 @@ import javax.persistence.TypedQuery;
  */
 public abstract class DAO<T, K> {
 
-    private final Class<T> clazz;
+    private final Class<T> typeClass;
 
     protected abstract EntityManager getEntityManager();
 
-    protected DAO(Class<T> clazz) {
-        this.clazz = clazz;
+    protected DAO(Class<T> typeClass) {
+        this.typeClass = typeClass;
     }
 
     public void create(T t) {
@@ -31,7 +31,7 @@ public abstract class DAO<T, K> {
     }
 
     public void delete(K id) {
-        T t = getEntityManager().getReference(clazz, id);
+        T t = getEntityManager().getReference(typeClass, id);
         getEntityManager().remove(t);
     }
 
@@ -40,7 +40,7 @@ public abstract class DAO<T, K> {
     }
 
     public T find(K id) {
-       return getEntityManager().find(clazz, id);
+       return getEntityManager().find(typeClass, id);
     }
 
     public List<T> findAll() {
@@ -54,7 +54,7 @@ public abstract class DAO<T, K> {
     private List<T> get(boolean all, int first, int n) {
         EntityManager em = getEntityManager();
         List<T> found = new ArrayList<>();
-        TypedQuery<T> q = em.createQuery("select t from " + clazz.getSimpleName() + " t", clazz);
+        TypedQuery<T> q = em.createQuery("select t from " + typeClass.getSimpleName() + " t", typeClass);
         if (!all) {
             q.setFirstResult(first);
             q.setMaxResults(n);
@@ -65,7 +65,7 @@ public abstract class DAO<T, K> {
 
     public int count() {
         EntityManager em = getEntityManager();
-        Long n = em.createQuery("select count(t) from " + clazz.getSimpleName() + " t", Long.class)
+        Long n = em.createQuery("select count(t) from " + typeClass.getSimpleName() + " t", Long.class)
                 .getSingleResult();
         return n.intValue();
     }
