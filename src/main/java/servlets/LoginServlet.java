@@ -41,8 +41,10 @@ public class LoginServlet extends HttpServlet {
         User user = login(username, password);
         if(user != null){
             HttpSession session = request.getSession();
+            String uri = session.getAttribute("destination") == null ? 
+                    "home" : (String) session.getAttribute("destination");           
             session.setAttribute("user", user);
-            response.sendRedirect("home");
+            response.sendRedirect(uri);
         }
         else{
             response.sendRedirect("login?failed=true");

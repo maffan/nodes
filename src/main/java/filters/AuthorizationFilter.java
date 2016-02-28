@@ -39,6 +39,8 @@ public class AuthorizationFilter implements Filter {
         HttpSession session = httpRequest.getSession(false);
         String uri = httpRequest.getRequestURI();
         if(session == null && !uri.endsWith("login")){
+            session = httpRequest.getSession(true);
+            session.setAttribute("destination", uri);
             httpResponse.sendRedirect("login");
         }
         else{
