@@ -25,7 +25,7 @@ import javax.servlet.http.HttpSession;
  * @author Marcus
  */
 @WebFilter(filterName = "AutharizationFilter", urlPatterns = {"/*"})
-public class AutharizationFilter implements Filter {
+public class AuthorizationFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
