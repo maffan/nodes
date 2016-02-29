@@ -10,9 +10,12 @@
             <input class="form-control" type="password" id="password" name="password" placeholder="Password"/>
         </div>
         <c:if test="${param.failed}">
-        <div class="alert alert-danger">Wrong username and/or password</div>
-    </c:if>
+            <div class="alert alert-danger">Wrong username and/or password</div>
+        </c:if>
         <button type="submit" class="btn btn-primary">Login</button>
+        <div>
+            <a href="${pageContext.request.contextPath}/register" class="link">Register new user</a>
+        </div>
     </form>
     
 </div>

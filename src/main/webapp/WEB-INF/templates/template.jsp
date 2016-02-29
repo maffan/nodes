@@ -8,14 +8,23 @@
         <c:set var="res" value="${pageContext.request.contextPath}/resources" />
         <link rel="stylesheet" type="text/css" href="${res}/css/normalize.css" />
         <link rel="stylesheet" type="text/css" href="${res}/css/bootstrap.css" />
-        <script  type="text/javascript" src="${res}/js/jquery-1.11.3.min.js"></script>
+        <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+        <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
         <link rel="icon" type="image/png" href="${res}/img/favicon.png">
     </head>
     <body class="container">
         <c:set var="root" value="${pageContext.request.contextPath}" />
         <nav class="navbar navbar-default" role="navigation">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="/">NODES</a>
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="./">NODES</a>
+                </div>
+                <c:if test="${user != null}">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="${root}/settings">Settings</a></li>
+                        <li><a href="${root}/logout">Logout</a></li>
+                    </ul>
+                </c:if>
             </div>
         </nav>   
         <!-- Insert the dynamic content -->

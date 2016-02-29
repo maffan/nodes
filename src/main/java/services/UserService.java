@@ -6,10 +6,10 @@
 package services;
 
 import entities.User;
-import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import persistence.DAO;
 
 /**
@@ -29,5 +29,10 @@ public class UserService extends DAO<User,String>{
     @Override
     protected EntityManager getEntityManager() {
         return this.entityManager;
+    }
+    
+    public User findByPhone(String phone){
+        User user = entityManager.createQuery("select t from User t where t.phone = " + phone + "", User.class).getSingleResult();
+        return user;
     }
 }
