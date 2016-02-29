@@ -16,6 +16,14 @@
         <filter-name>Authorization</filter-name>
         <servlet-name>LogoutServlet</servlet-name>
     </filter-mapping>
+    <filter-mapping>
+        <filter-name>Authorization</filter-name>
+        <servlet-name>SettingsServlet</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Authorization</filter-name>
+        <servlet-name>NodeServlet</servlet-name>
+    </filter-mapping>
     <servlet>
         <servlet-name>HomeServlet</servlet-name>
         <servlet-class>servlets.HomeServlet</servlet-class>
@@ -32,6 +40,14 @@
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>servlets.LogoutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SettingsServlet</servlet-name>
+        <servlet-class>servlets.SettingsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>NodeServlet</servlet-name>
+        <servlet-class>servlets.NodeServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -47,6 +63,14 @@
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SettingsServlet</servlet-name>
+        <url-pattern>/settings</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NodeServlet</servlet-name>
+        <url-pattern>/nodes</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
