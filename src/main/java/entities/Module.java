@@ -17,6 +17,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -24,6 +26,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "modules")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Module.findAll", query = "SELECT m FROM Module m")})
 public class Module implements Serializable {
@@ -64,6 +67,7 @@ public class Module implements Serializable {
         this.jsp = jsp;
     }
 
+    @XmlTransient
     public List<Collection> getCollectionList() {
         return collectionList;
     }

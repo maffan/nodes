@@ -23,6 +23,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -30,6 +32,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "collections")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Collection.findAll", query = "SELECT c FROM Collection c")})
 public class Collection implements Serializable {
@@ -85,6 +88,7 @@ public class Collection implements Serializable {
         this.name = name;
     }
 
+    @XmlTransient
     public List<Node> getNodeList() {
         return nodeList;
     }
@@ -93,6 +97,7 @@ public class Collection implements Serializable {
         this.nodeList = nodeList;
     }
 
+    @XmlTransient
     public List<Module> getModuleList() {
         return moduleList;
     }
@@ -117,6 +122,7 @@ public class Collection implements Serializable {
         this.metacollection = metacollection;
     }
 
+    @XmlTransient
     public List<Metacollection> getMetacollectionList() {
         return metacollectionList;
     }

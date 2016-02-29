@@ -18,6 +18,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -25,6 +27,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "users")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")})
 public class User implements Serializable {
@@ -101,6 +104,7 @@ public class User implements Serializable {
         this.phone = phone;
     }
 
+    @XmlTransient
     public List<Node> getNodeList() {
         return nodeList;
     }
@@ -109,6 +113,7 @@ public class User implements Serializable {
         this.nodeList = nodeList;
     }
 
+    @XmlTransient
     public List<Collection> getCollectionList() {
         return collectionList;
     }

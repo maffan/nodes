@@ -11,11 +11,15 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -23,6 +27,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "datapoints")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Datapoint.findAll", query = "SELECT d FROM Datapoint d")})
 public class Datapoint implements Serializable {
@@ -35,6 +40,11 @@ public class Datapoint implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "data")
     private String data;
+    @JoinColumns({
+        @JoinColumn(name = "node", referencedColumnName = "name", insertable = false, updatable = false),
+        @JoinColumn(name = "owner", referencedColumnName = "owner", insertable = false, updatable = false)})
+    @ManyToOne(optional = false)
+    private Node node1;
 
     public Datapoint() {
     }
@@ -66,6 +76,14 @@ public class Datapoint implements Serializable {
 
     public void setData(String data) {
         this.data = data;
+    }
+
+    public Node getNode1() {
+        return node1;
+    }
+
+    public void setNode1(Node node1) {
+        this.node1 = node1;
     }
 
     @Override

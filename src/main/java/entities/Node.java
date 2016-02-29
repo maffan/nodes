@@ -15,8 +15,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -24,6 +27,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "nodes")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Node.findAll", query = "SELECT n FROM Node n")})
 public class Node implements Serializable {
@@ -33,11 +37,13 @@ public class Node implements Serializable {
     protected NodePK nodePK;
     @ManyToMany(mappedBy = "nodeList")
     private List<Collection> collectionList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "node1")
+    private List<Datapoint> datapointList;
     @JoinColumn(name = "owner", referencedColumnName = "mail", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private User user;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "node1")
-    private Publicnode publicnode;
+    private Publicnod publicnod;
 
     public Node() {
     }
@@ -58,12 +64,22 @@ public class Node implements Serializable {
         this.nodePK = nodePK;
     }
 
+    @XmlTransient
     public List<Collection> getCollectionList() {
         return collectionList;
     }
 
     public void setCollectionList(List<Collection> collectionList) {
         this.collectionList = collectionList;
+    }
+
+    @XmlTransient
+    public List<Datapoint> getDatapointList() {
+        return datapointList;
+    }
+
+    public void setDatapointList(List<Datapoint> datapointList) {
+        this.datapointList = datapointList;
     }
 
     public User getUser() {
@@ -74,12 +90,12 @@ public class Node implements Serializable {
         this.user = user;
     }
 
-    public Publicnode getPublicnode() {
-        return publicnode;
+    public Publicnod getPublicnod() {
+        return publicnod;
     }
 
-    public void setPublicnode(Publicnode publicnode) {
-        this.publicnode = publicnode;
+    public void setPublicnod(Publicnod publicnod) {
+        this.publicnod = publicnod;
     }
 
     @Override

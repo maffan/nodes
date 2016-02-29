@@ -17,7 +17,7 @@ import javax.validation.constraints.Size;
  * @author flycktm
  */
 @Embeddable
-public class PublicnodePK implements Serializable {
+public class PublicnodPK implements Serializable {
 
     @Basic(optional = false)
     @NotNull
@@ -30,10 +30,10 @@ public class PublicnodePK implements Serializable {
     @Column(name = "owner")
     private String owner;
 
-    public PublicnodePK() {
+    public PublicnodPK() {
     }
 
-    public PublicnodePK(String node, String owner) {
+    public PublicnodPK(String node, String owner) {
         this.node = node;
         this.owner = owner;
     }
@@ -65,10 +65,10 @@ public class PublicnodePK implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PublicnodePK)) {
+        if (!(object instanceof PublicnodPK)) {
             return false;
         }
-        PublicnodePK other = (PublicnodePK) object;
+        PublicnodPK other = (PublicnodPK) object;
         if ((this.node == null && other.node != null) || (this.node != null && !this.node.equals(other.node))) {
             return false;
         }
@@ -80,7 +80,7 @@ public class PublicnodePK implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.PublicnodePK[ node=" + node + ", owner=" + owner + " ]";
+        return "entities.PublicnodPK[ node=" + node + ", owner=" + owner + " ]";
     }
     
 }

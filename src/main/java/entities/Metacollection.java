@@ -17,6 +17,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -24,6 +25,7 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "metacollections")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Metacollection.findAll", query = "SELECT m FROM Metacollection m")})
 public class Metacollection implements Serializable {
