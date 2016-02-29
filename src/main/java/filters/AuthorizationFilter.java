@@ -24,7 +24,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Marcus
  */
-@WebFilter(filterName = "AutharizationFilter", urlPatterns = {"/*"})
+@WebFilter(filterName = "AutharizationFilter", urlPatterns = {"/home"})
 public class AuthorizationFilter implements Filter {
 
     @Override
@@ -36,10 +36,9 @@ public class AuthorizationFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        HttpSession session = httpRequest.getSession(false);
+        HttpSession session = httpRequest.getSession();
         String uri = httpRequest.getRequestURI();
-        if(session == null && !uri.endsWith("login")){
-            session = httpRequest.getSession(true);
+        if(session.getAttribute("user") == null && !uri.endsWith("login")){
             session.setAttribute("destination", uri);
             httpResponse.sendRedirect("login");
         }

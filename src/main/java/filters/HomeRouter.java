@@ -15,6 +15,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -35,15 +36,16 @@ public class HomeRouter implements Filter {
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws ServletException, IOException {
-        HttpServletRequest r = (HttpServletRequest) req;
+        HttpServletRequest httpRequest = (HttpServletRequest) req;
+        HttpServletResponse httpResponse = (HttpServletResponse) res;
 
-        String uri = r.getRequestURI();
-        String path = r.getServletPath();
+        String uri = httpRequest.getRequestURI();
+        String path = httpRequest.getServletPath();
         if (resources.matcher(uri).matches()) {
             chain.doFilter(req, res);
         } 
-        else if (path.equals("/") || path.equals("/home")) {
-            r.getRequestDispatcher("/home").forward(req, res);
+        else if (path.equals("/")) {
+            httpResponse.sendRedirect("home");
         } 
         else {
             chain.doFilter(req, res);
