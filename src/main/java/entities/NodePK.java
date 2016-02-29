@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author Marcus
+ * @author flycktm
  */
 @Embeddable
 public class NodePK implements Serializable {
@@ -80,7 +80,7 @@ public class NodePK implements Serializable {
 
     @Override
     public String toString() {
-        return "se.nomorebagels.entities.NodePK[ name=" + name + ", owner=" + owner + " ]";
+        return "entities.NodePK[ name=" + name + ", owner=" + owner + " ]";
     }
     
 }

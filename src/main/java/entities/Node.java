@@ -20,7 +20,7 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Marcus
+ * @author flycktm
  */
 @Entity
 @Table(name = "nodes")
@@ -32,12 +32,10 @@ public class Node implements Serializable {
     @EmbeddedId
     protected NodePK nodePK;
     @ManyToMany(mappedBy = "nodeList")
-    private List<NodeCollection> nodeCollectionList;
+    private List<Collection> collectionList;
     @JoinColumn(name = "owner", referencedColumnName = "mail", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private User user;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "node1")
-    private Nodetype nodetype;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "node1")
     private Publicnode publicnode;
 
@@ -60,12 +58,12 @@ public class Node implements Serializable {
         this.nodePK = nodePK;
     }
 
-    public List<NodeCollection> getNodeCollectionList() {
-        return nodeCollectionList;
+    public List<Collection> getCollectionList() {
+        return collectionList;
     }
 
-    public void setNodeCollectionList(List<NodeCollection> nodeCollectionList) {
-        this.nodeCollectionList = nodeCollectionList;
+    public void setCollectionList(List<Collection> collectionList) {
+        this.collectionList = collectionList;
     }
 
     public User getUser() {
@@ -74,14 +72,6 @@ public class Node implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Nodetype getNodetype() {
-        return nodetype;
-    }
-
-    public void setNodetype(Nodetype nodetype) {
-        this.nodetype = nodetype;
     }
 
     public Publicnode getPublicnode() {
@@ -114,7 +104,7 @@ public class Node implements Serializable {
 
     @Override
     public String toString() {
-        return "se.nomorebagels.entities.Node[ nodePK=" + nodePK + " ]";
+        return "entities.Node[ nodePK=" + nodePK + " ]";
     }
     
 }

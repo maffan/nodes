@@ -17,7 +17,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author Marcus
+ * @author flycktm
  */
 @Embeddable
 public class DatapointPK implements Serializable {
@@ -101,7 +101,7 @@ public class DatapointPK implements Serializable {
 
     @Override
     public String toString() {
-        return "se.nomorebagels.entities.DatapointPK[ node=" + node + ", owner=" + owner + ", time=" + time + " ]";
+        return "entities.DatapointPK[ node=" + node + ", owner=" + owner + ", time=" + time + " ]";
     }
     
 }

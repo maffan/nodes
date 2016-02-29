@@ -19,7 +19,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author Marcus
+ * @author flycktm
  */
 @Entity
 @Table(name = "datapoints")
@@ -90,7 +90,7 @@ public class Datapoint implements Serializable {
 
     @Override
     public String toString() {
-        return "se.nomorebagels.entities.Datapoint[ datapointPK=" + datapointPK + " ]";
+        return "entities.Datapoint[ datapointPK=" + datapointPK + " ]";
     }
     
 }

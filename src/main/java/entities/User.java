@@ -21,7 +21,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author Marcus
+ * @author flycktm
  */
 @Entity
 @Table(name = "users")
@@ -42,14 +42,17 @@ public class User implements Serializable {
     @Size(max = 50)
     @Column(name = "name")
     private String name;
+    @Size(max = 50)
+    @Column(name = "api")
+    private String api;
     // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Size(max = 50)
     @Column(name = "phone")
     private String phone;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Node> nodeList;
-    @OneToMany(mappedBy = "user")
-    private List<NodeCollection> nodeCollectionList;
+    @OneToMany(mappedBy = "owner")
+    private List<Collection> collectionList;
 
     public User() {
     }
@@ -82,6 +85,14 @@ public class User implements Serializable {
         this.name = name;
     }
 
+    public String getApi() {
+        return api;
+    }
+
+    public void setApi(String api) {
+        this.api = api;
+    }
+
     public String getPhone() {
         return phone;
     }
@@ -98,12 +109,12 @@ public class User implements Serializable {
         this.nodeList = nodeList;
     }
 
-    public List<NodeCollection> getNodeCollectionList() {
-        return nodeCollectionList;
+    public List<Collection> getCollectionList() {
+        return collectionList;
     }
 
-    public void setNodeCollectionList(List<NodeCollection> nodeCollectionList) {
-        this.nodeCollectionList = nodeCollectionList;
+    public void setCollectionList(List<Collection> collectionList) {
+        this.collectionList = collectionList;
     }
 
     @Override
@@ -128,7 +139,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "se.nomorebagels.entities.User[ mail=" + mail + " ]";
+        return "entities.User[ mail=" + mail + " ]";
     }
     
 }

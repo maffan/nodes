@@ -26,13 +26,13 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author Marcus
+ * @author flycktm
  */
 @Entity
 @Table(name = "collections")
 @NamedQueries({
-    @NamedQuery(name = "NodeCollection.findAll", query = "SELECT n FROM NodeCollection n")})
-public class NodeCollection implements Serializable {
+    @NamedQuery(name = "Collection.findAll", query = "SELECT c FROM Collection c")})
+public class Collection implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -49,18 +49,23 @@ public class NodeCollection implements Serializable {
         @JoinColumn(name = "owner", referencedColumnName = "owner")})
     @ManyToMany
     private List<Node> nodeList;
+    @JoinTable(name = "modulecollections", joinColumns = {
+        @JoinColumn(name = "collection", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "module", referencedColumnName = "name")})
+    @ManyToMany
+    private List<Module> moduleList;
     @JoinColumn(name = "owner", referencedColumnName = "mail")
     @ManyToOne
-    private User user;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "nodeCollection")
+    private User owner;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "collection")
     private Metacollection metacollection;
-    @OneToMany(mappedBy = "nodeCollection1")
+    @OneToMany(mappedBy = "child")
     private List<Metacollection> metacollectionList;
 
-    public NodeCollection() {
+    public Collection() {
     }
 
-    public NodeCollection(Integer id) {
+    public Collection(Integer id) {
         this.id = id;
     }
 
@@ -88,12 +93,20 @@ public class NodeCollection implements Serializable {
         this.nodeList = nodeList;
     }
 
-    public User getUser() {
-        return user;
+    public List<Module> getModuleList() {
+        return moduleList;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setModuleList(List<Module> moduleList) {
+        this.moduleList = moduleList;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     public Metacollection getMetacollection() {
@@ -122,10 +135,10 @@ public class NodeCollection implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof NodeCollection)) {
+        if (!(object instanceof Collection)) {
             return false;
         }
-        NodeCollection other = (NodeCollection) object;
+        Collection other = (Collection) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -134,7 +147,7 @@ public class NodeCollection implements Serializable {
 
     @Override
     public String toString() {
-        return "se.nomorebagels.entities.NodeCollection[ id=" + id + " ]";
+        return "entities.Collection[ id=" + id + " ]";
     }
     
 }

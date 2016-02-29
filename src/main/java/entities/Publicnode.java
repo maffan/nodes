@@ -17,7 +17,7 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Marcus
+ * @author flycktm
  */
 @Entity
 @Table(name = "publicnode")
@@ -83,7 +83,7 @@ public class Publicnode implements Serializable {
 
     @Override
     public String toString() {
-        return "se.nomorebagels.entities.Publicnode[ publicnodePK=" + publicnodePK + " ]";
+        return "entities.Publicnode[ publicnodePK=" + publicnodePK + " ]";
     }
     
 }

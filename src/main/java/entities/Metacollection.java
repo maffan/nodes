@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
 
 /**
  *
- * @author Marcus
+ * @author flycktm
  */
 @Entity
 @Table(name = "metacollections")
@@ -36,10 +36,10 @@ public class Metacollection implements Serializable {
     private Integer parent;
     @JoinColumn(name = "parent", referencedColumnName = "id", insertable = false, updatable = false)
     @OneToOne(optional = false)
-    private NodeCollection nodeCollection;
+    private Collection collection;
     @JoinColumn(name = "child", referencedColumnName = "id")
     @ManyToOne
-    private NodeCollection nodeCollection1;
+    private Collection child;
 
     public Metacollection() {
     }
@@ -56,20 +56,20 @@ public class Metacollection implements Serializable {
         this.parent = parent;
     }
 
-    public NodeCollection getNodeCollection() {
-        return nodeCollection;
+    public Collection getCollection() {
+        return collection;
     }
 
-    public void setNodeCollection(NodeCollection nodeCollection) {
-        this.nodeCollection = nodeCollection;
+    public void setCollection(Collection collection) {
+        this.collection = collection;
     }
 
-    public NodeCollection getNodeCollection1() {
-        return nodeCollection1;
+    public Collection getChild() {
+        return child;
     }
 
-    public void setNodeCollection1(NodeCollection nodeCollection1) {
-        this.nodeCollection1 = nodeCollection1;
+    public void setChild(Collection child) {
+        this.child = child;
     }
 
     @Override
@@ -94,7 +94,7 @@ public class Metacollection implements Serializable {
 
     @Override
     public String toString() {
-        return "se.nomorebagels.entities.Metacollection[ parent=" + parent + " ]";
+        return "entities.Metacollection[ parent=" + parent + " ]";
     }
     
 }

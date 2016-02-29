@@ -6,10 +6,12 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -21,71 +23,70 @@ import javax.validation.constraints.Size;
  * @author flycktm
  */
 @Entity
-@Table(name = "nodetypes")
+@Table(name = "modules")
 @NamedQueries({
-    @NamedQuery(name = "Nodetype.findAll", query = "SELECT n FROM Nodetype n")})
-public class Nodetype implements Serializable {
+    @NamedQuery(name = "Module.findAll", query = "SELECT m FROM Module m")})
+public class Module implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
-    @Column(name = "type")
-    private String type;
+    @Column(name = "name")
+    private String name;
     @Size(max = 50)
-    @Column(name = "singular")
-    private String singular;
-    @Size(max = 50)
-    @Column(name = "plural")
-    private String plural;
+    @Column(name = "jsp")
+    private String jsp;
+    @ManyToMany(mappedBy = "moduleList")
+    private List<Collection> collectionList;
 
-    public Nodetype() {
+    public Module() {
     }
 
-    public Nodetype(String type) {
-        this.type = type;
+    public Module(String name) {
+        this.name = name;
     }
 
-    public String getType() {
-        return type;
+    public String getName() {
+        return name;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getSingular() {
-        return singular;
+    public String getJsp() {
+        return jsp;
     }
 
-    public void setSingular(String singular) {
-        this.singular = singular;
+    public void setJsp(String jsp) {
+        this.jsp = jsp;
     }
 
-    public String getPlural() {
-        return plural;
+    public List<Collection> getCollectionList() {
+        return collectionList;
     }
 
-    public void setPlural(String plural) {
-        this.plural = plural;
+    public void setCollectionList(List<Collection> collectionList) {
+        this.collectionList = collectionList;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (type != null ? type.hashCode() : 0);
+        hash += (name != null ? name.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Nodetype)) {
+        if (!(object instanceof Module)) {
             return false;
         }
-        Nodetype other = (Nodetype) object;
-        if ((this.type == null && other.type != null) || (this.type != null && !this.type.equals(other.type))) {
+        Module other = (Module) object;
+        if ((this.name == null && other.name != null) || (this.name != null && !this.name.equals(other.name))) {
             return false;
         }
         return true;
@@ -93,7 +94,7 @@ public class Nodetype implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.Nodetype[ type=" + type + " ]";
+        return "entities.Module[ name=" + name + " ]";
     }
     
 }
