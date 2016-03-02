@@ -18,41 +18,43 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author flycktm
+ * @author tobedv
  */
 @Entity
 @Table(name = "publicnode")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Publicnod.findAll", query = "SELECT p FROM Publicnod p")})
-public class Publicnod implements Serializable {
+    @NamedQuery(name = "Publicnode.findAll", query = "SELECT p FROM Publicnode p"),
+    @NamedQuery(name = "Publicnode.findByNode", query = "SELECT p FROM Publicnode p WHERE p.publicnodePK.node = :node"),
+    @NamedQuery(name = "Publicnode.findByOwner", query = "SELECT p FROM Publicnode p WHERE p.publicnodePK.owner = :owner")})
+public class Publicnode implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
-    protected PublicnodPK publicnodPK;
+    protected PublicnodePK publicnodePK;
     @JoinColumns({
         @JoinColumn(name = "node", referencedColumnName = "name", insertable = false, updatable = false),
         @JoinColumn(name = "owner", referencedColumnName = "owner", insertable = false, updatable = false)})
     @OneToOne(optional = false)
     private Node node1;
 
-    public Publicnod() {
+    public Publicnode() {
     }
 
-    public Publicnod(PublicnodPK publicnodPK) {
-        this.publicnodPK = publicnodPK;
+    public Publicnode(PublicnodePK publicnodePK) {
+        this.publicnodePK = publicnodePK;
     }
 
-    public Publicnod(String node, String owner) {
-        this.publicnodPK = new PublicnodPK(node, owner);
+    public Publicnode(String node, String owner) {
+        this.publicnodePK = new PublicnodePK(node, owner);
     }
 
-    public PublicnodPK getPublicnodPK() {
-        return publicnodPK;
+    public PublicnodePK getPublicnodePK() {
+        return publicnodePK;
     }
 
-    public void setPublicnodPK(PublicnodPK publicnodPK) {
-        this.publicnodPK = publicnodPK;
+    public void setPublicnodePK(PublicnodePK publicnodePK) {
+        this.publicnodePK = publicnodePK;
     }
 
     public Node getNode1() {
@@ -66,18 +68,18 @@ public class Publicnod implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (publicnodPK != null ? publicnodPK.hashCode() : 0);
+        hash += (publicnodePK != null ? publicnodePK.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Publicnod)) {
+        if (!(object instanceof Publicnode)) {
             return false;
         }
-        Publicnod other = (Publicnod) object;
-        if ((this.publicnodPK == null && other.publicnodPK != null) || (this.publicnodPK != null && !this.publicnodPK.equals(other.publicnodPK))) {
+        Publicnode other = (Publicnode) object;
+        if ((this.publicnodePK == null && other.publicnodePK != null) || (this.publicnodePK != null && !this.publicnodePK.equals(other.publicnodePK))) {
             return false;
         }
         return true;
@@ -85,7 +87,7 @@ public class Publicnod implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.Publicnod[ publicnodPK=" + publicnodPK + " ]";
+        return "entities.Publicnode[ publicnodePK=" + publicnodePK + " ]";
     }
     
 }

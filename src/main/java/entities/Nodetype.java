@@ -19,13 +19,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author flycktm
+ * @author tobedv
  */
 @Entity
 @Table(name = "nodetypes")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Nodetype.findAll", query = "SELECT n FROM Nodetype n")})
+    @NamedQuery(name = "Nodetype.findAll", query = "SELECT n FROM Nodetype n"),
+    @NamedQuery(name = "Nodetype.findByType", query = "SELECT n FROM Nodetype n WHERE n.type = :type"),
+    @NamedQuery(name = "Nodetype.findBySingular", query = "SELECT n FROM Nodetype n WHERE n.singular = :singular"),
+    @NamedQuery(name = "Nodetype.findByPlural", query = "SELECT n FROM Nodetype n WHERE n.plural = :plural")})
 public class Nodetype implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -23,13 +23,15 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author flycktm
+ * @author tobedv
  */
 @Entity
 @Table(name = "nodes")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Node.findAll", query = "SELECT n FROM Node n")})
+    @NamedQuery(name = "Node.findAll", query = "SELECT n FROM Node n"),
+    @NamedQuery(name = "Node.findByName", query = "SELECT n FROM Node n WHERE n.nodePK.name = :name"),
+    @NamedQuery(name = "Node.findByOwner", query = "SELECT n FROM Node n WHERE n.nodePK.owner = :owner")})
 public class Node implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -43,7 +45,7 @@ public class Node implements Serializable {
     @ManyToOne(optional = false)
     private User user;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "node1")
-    private Publicnod publicnod;
+    private Publicnode publicnode;
 
     public Node() {
     }
@@ -90,12 +92,12 @@ public class Node implements Serializable {
         this.user = user;
     }
 
-    public Publicnod getPublicnod() {
-        return publicnod;
+    public Publicnode getPublicnode() {
+        return publicnode;
     }
 
-    public void setPublicnod(Publicnod publicnod) {
-        this.publicnod = publicnod;
+    public void setPublicnode(Publicnode publicnode) {
+        this.publicnode = publicnode;
     }
 
     @Override
