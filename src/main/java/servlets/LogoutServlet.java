@@ -31,7 +31,7 @@ public class LogoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         logout(request.getSession());
-        request.getRequestDispatcher(HomeRouter.TEMPLATE + "?partial=logout").forward(request, response);
+        response.sendRedirect("login");
     }
 
     private void logout(HttpSession session) {
