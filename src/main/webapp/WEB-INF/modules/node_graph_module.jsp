@@ -23,7 +23,7 @@
 
       chart.draw(data, options);
     }
-    var ws = new WebSocket("ws://localhost:8080/nodes/websocket/admin/testNode");
+    var ws = new WebSocket("ws://localhost:8080/nodes/websocket/${moduleUser}/${moduleCollection.get(0).getName()}");
     ws.onopen = function()
     {
        console.log("Websocket connected");
@@ -42,15 +42,15 @@
     
   function load_data(){
   $.ajax({
-      //url: "webresources/datapoint/${moduleUser}/${moduleCollection[0]}",
-      url: "webresources/datapoint/admin/testNode",
+      url: "webresources/datapoint/${moduleUser}/${moduleCollection.get(0).getName()}",
+      //url: "webresources/datapoint/admin/testNode",
       headers: {"APIKey": "${user.getApi()}", "owner": "${user.getMail()}"},
       type: 'GET',
       success: function (data) {
                         console.log(data);
                         var tableData = new google.visualization.DataTable();
                         tableData.addColumn('string', 'Date');   
-                        tableData.addColumn('number','testNode' );
+                        tableData.addColumn('number',${moduleCollection.get(0).getName()} );
                         for(dataPointIndex in data){                           
                             tableData.addRow([data[dataPointIndex].datapointPK.time, data[dataPointIndex].data]);
                         }
