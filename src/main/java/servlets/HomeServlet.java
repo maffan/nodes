@@ -35,13 +35,6 @@ NodeService nodeService;
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            /*User user = userService.find("test@mail.com");
-            Random random = new Random();
-            Node node = new Node(String.valueOf(random.nextInt()), user.getMail());
-            nodeService.create(node);
-            List<Node> nodes = user.getNodeList();
-            request.setAttribute("user", user);
-            request.setAttribute("nodes", nodes);*/
             request.getRequestDispatcher(HomeRouter.TEMPLATE + "?partial=user").forward(request, response);
     }
 

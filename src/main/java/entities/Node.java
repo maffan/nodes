@@ -39,7 +39,7 @@ public class Node implements Serializable {
     protected NodePK nodePK;
     @ManyToMany(mappedBy = "nodeList")
     private List<Collection> collectionList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "node1")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "node1", orphanRemoval=true)
     private List<Datapoint> datapointList;
     @JoinColumn(name = "owner", referencedColumnName = "mail", insertable = false, updatable = false)
     @ManyToOne(optional = false)

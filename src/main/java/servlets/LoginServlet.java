@@ -41,7 +41,7 @@ public class LoginServlet extends HttpServlet {
         User user = login(username, password);
         if(user != null){
             HttpSession session = request.getSession();
-            String uri = session.getAttribute("destination") == null ? 
+            String uri = (session.getAttribute("destination") == null) || session.getAttribute("destination").equals("logout") ? 
                     "home" : (String) session.getAttribute("destination");           
             session.setAttribute("user", user);
             response.sendRedirect(uri);
