@@ -1,6 +1,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+${param.moduleCollection}
 <script>
     google.charts.load('current', {packages: ['line']});
     google.charts.setOnLoadCallback(load_data);
@@ -23,7 +24,7 @@
 
       chart.draw(data, options);
     }
-    var ws = new WebSocket("ws://localhost:8080/nodes/websocket/${moduleUser}/${moduleCollection.get(0).getName()}");
+    var ws = new WebSocket("ws://localhost:8080/nodes/websocket/${param.moduleUser}/${param.moduleCollection}");
     ws.onopen = function()
     {
        console.log("Websocket connected");
@@ -42,7 +43,7 @@
     
   function load_data(){
   $.ajax({
-      url: "webresources/datapoint/${moduleUser}/${moduleCollection.get(0).getName()}",
+      url: "webresources/datapoint/${param.moduleUser}/${param.moduleCollection}",
       //url: "webresources/datapoint/admin/testNode",
       headers: {"APIKey": "${user.getApi()}", "owner": "${user.getMail()}"},
       type: 'GET',
@@ -50,7 +51,7 @@
                         console.log(data);
                         var tableData = new google.visualization.DataTable();
                         tableData.addColumn('string', 'Date');   
-                        tableData.addColumn('number',${moduleCollection.get(0).getName()} );
+                        tableData.addColumn('number',"${param.moduleCollection}" );
                         for(dataPointIndex in data){                           
                             tableData.addRow([data[dataPointIndex].datapointPK.time, data[dataPointIndex].data]);
                         }
