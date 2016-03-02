@@ -18,7 +18,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -29,7 +28,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "datapoints")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Datapoint.findAll", query = "SELECT d FROM Datapoint d")})
+    @NamedQuery(name = "Datapoint.findAll", query = "SELECT d FROM Datapoint d"),
+    @NamedQuery(name = "Datapoint.findByNode", query = "SELECT d FROM Datapoint d WHERE d.datapointPK.node = :node"),
+    @NamedQuery(name = "Datapoint.findByOwner", query = "SELECT d FROM Datapoint d WHERE d.datapointPK.owner = :owner"),
+    @NamedQuery(name = "Datapoint.findByTime", query = "SELECT d FROM Datapoint d WHERE d.datapointPK.time = :time"),
+    @NamedQuery(name = "Datapoint.findByData", query = "SELECT d FROM Datapoint d WHERE d.data = :data")})
 public class Datapoint implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -37,9 +40,8 @@ public class Datapoint implements Serializable {
     protected DatapointPK datapointPK;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
     @Column(name = "data")
-    private String data;
+    private int data;
     @JoinColumns({
         @JoinColumn(name = "node", referencedColumnName = "name", insertable = false, updatable = false),
         @JoinColumn(name = "owner", referencedColumnName = "owner", insertable = false, updatable = false)})
@@ -53,7 +55,7 @@ public class Datapoint implements Serializable {
         this.datapointPK = datapointPK;
     }
 
-    public Datapoint(DatapointPK datapointPK, String data) {
+    public Datapoint(DatapointPK datapointPK, int data) {
         this.datapointPK = datapointPK;
         this.data = data;
     }
@@ -70,11 +72,11 @@ public class Datapoint implements Serializable {
         this.datapointPK = datapointPK;
     }
 
-    public String getData() {
+    public int getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(int data) {
         this.data = data;
     }
 

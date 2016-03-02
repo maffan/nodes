@@ -28,7 +28,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "modules")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Module.findAll", query = "SELECT m FROM Module m")})
+    @NamedQuery(name = "Module.findAll", query = "SELECT m FROM Module m"),
+    @NamedQuery(name = "Module.findByName", query = "SELECT m FROM Module m WHERE m.name = :name"),
+    @NamedQuery(name = "Module.findByJsp", query = "SELECT m FROM Module m WHERE m.jsp = :jsp")})
 public class Module implements Serializable {
 
     private static final long serialVersionUID = 1L;

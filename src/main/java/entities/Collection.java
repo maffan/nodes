@@ -34,7 +34,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "collections")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Collection.findAll", query = "SELECT c FROM Collection c")})
+    @NamedQuery(name = "Collection.findAll", query = "SELECT c FROM Collection c"),
+    @NamedQuery(name = "Collection.findById", query = "SELECT c FROM Collection c WHERE c.id = :id"),
+    @NamedQuery(name = "Collection.findByName", query = "SELECT c FROM Collection c WHERE c.name = :name")})
 public class Collection implements Serializable {
 
     private static final long serialVersionUID = 1L;

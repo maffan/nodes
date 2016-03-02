@@ -27,7 +27,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "metacollections")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Metacollection.findAll", query = "SELECT m FROM Metacollection m")})
+    @NamedQuery(name = "Metacollection.findAll", query = "SELECT m FROM Metacollection m"),
+    @NamedQuery(name = "Metacollection.findByParent", query = "SELECT m FROM Metacollection m WHERE m.parent = :parent")})
 public class Metacollection implements Serializable {
 
     private static final long serialVersionUID = 1L;
