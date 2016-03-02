@@ -93,6 +93,7 @@ public class Collection implements Serializable {
 
     @XmlTransient
     public List<Node> getNodeList() {
+        System.out.println(nodeList.size());
         return nodeList;
     }
 
