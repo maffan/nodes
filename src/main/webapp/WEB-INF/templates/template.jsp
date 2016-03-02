@@ -8,6 +8,7 @@
         <c:set var="res" value="${pageContext.request.contextPath}/resources" />
         <link rel="stylesheet" type="text/css" href="${res}/css/normalize.css" />
         <link rel="stylesheet" type="text/css" href="${res}/css/bootstrap.css" />
+        <link rel="stylesheet" type="text/css" href="${res}/css/custom.css" />
         <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
         <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
         <link rel="icon" type="image/png" href="${res}/img/favicon.png">
