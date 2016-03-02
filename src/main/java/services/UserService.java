@@ -32,7 +32,11 @@ public class UserService extends DAO<User,String>{
     }
     
     public User findByPhone(String phone){
-        User user = entityManager.createQuery("select t from User t where t.phone = " + phone + "", User.class).getSingleResult();
-        return user;
+        try{
+            User user = entityManager.createQuery("select t from User t where t.phone = " + phone + "", User.class).getSingleResult();
+            return user;
+        }catch(Exception e){
+            return null;
+        }
     }
 }

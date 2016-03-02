@@ -1,11 +1,27 @@
-$(document).ready(function(){
-    
-    $("#genHash").click(function() {
-        var current_date = (new Date()).valueOf().toString();
-        var random = Math.random().toString();
-        var hash = CryptoJS.MD5(current_date+random);
-        $("#hash").val(hash);
+function addToCollection(username, node, collection){
+    doPost("addtocollection", username, node, collection)
+}
+
+function deleteNode(username, node){
+    doPost("deletenode", username, node, "");
+}
+
+function deleteCollection(username, collection){
+    doPost("deletecollection", username, collection, "");
+}
+
+function removeFromCollection(username, node){
+    doPost("removefromcollection", username, node, "")
+}
+
+function doPost(method, username, value, value2){
+    $.post(window.location, {action: method, username: username, value: value, value2: value2}, function(data,status,xhr) {
+        location.reload();
       });
-});
+};
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
 
 
