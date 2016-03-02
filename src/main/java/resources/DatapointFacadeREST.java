@@ -52,7 +52,8 @@ public class DatapointFacadeREST extends DAO<Datapoint,DatapointPK> {
     @Consumes({MediaType.APPLICATION_JSON})
     public void create(Datapoint entity) {
         entity.getDatapointPK().setTime(new Date());
-        sessionHandler.messageAll(entity.getNode1().getNodePK());
+        NodePK nodePK = new NodePK(entity.getDatapointPK().getNode(), entity.getDatapointPK().getOwner());
+        sessionHandler.messageAll(nodePK);
         super.create(entity);
     }
     

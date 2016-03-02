@@ -12,13 +12,13 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
-import javax.ws.rs.PathParam;
+import javax.websocket.server.PathParam;
 
 /**
  *
  * @author flycktm
  */
-@ServerEndpoint("/nodedataendpoint/{owner}/{node}")
+@ServerEndpoint("/websocket/{owner}/{node}")
 @ApplicationScoped
 public class NodeDataSocketEndpoint {
     
@@ -27,7 +27,7 @@ public class NodeDataSocketEndpoint {
 
     @OnOpen
     public void open(Session session, @PathParam("owner") String owner, @PathParam("node") String node){
-        sessionHandler.addSession(session, owner, node);
+        sessionHandler.addSession(session, owner, node);       
     }
     
     @OnClose
