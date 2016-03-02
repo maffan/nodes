@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author flycktm
+ * @author tobedv
  */
 @Embeddable
 public class PublicnodePK implements Serializable {

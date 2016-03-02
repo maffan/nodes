@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author flycktm
+ * @author tobedv
  */
 @Entity
 @Table(name = "metacollections")

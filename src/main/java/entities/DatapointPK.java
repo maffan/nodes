@@ -17,7 +17,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author flycktm
+ * @author tobedv
  */
 @Embeddable
 public class DatapointPK implements Serializable {

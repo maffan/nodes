@@ -25,6 +25,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import persistence.DAO;
 import services.NodeService;
+import websocket.WebsocketSessionHandler;
 
 /**
  *
@@ -39,6 +40,9 @@ public class DatapointFacadeREST extends DAO<Datapoint,DatapointPK> {
     
     @Inject
     private NodeService nodeService;
+    
+    @Inject
+    private WebsocketSessionHandler sessionHandler;
 
     public DatapointFacadeREST() {
         super(Datapoint.class);
@@ -48,6 +52,7 @@ public class DatapointFacadeREST extends DAO<Datapoint,DatapointPK> {
     @Consumes({MediaType.APPLICATION_JSON})
     public void create(Datapoint entity) {
         entity.getDatapointPK().setTime(new Date());
+        sessionHandler.messageAll(entity.getNode1().getNodePK());
         super.create(entity);
     }
     

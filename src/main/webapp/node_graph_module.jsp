@@ -1,10 +1,15 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
 <script>
     google.charts.load('current', {packages: ['line']});
     google.charts.setOnLoadCallback(load_data);
-
+    var socket = io("ws://localhost:8080/nodes/nodedataendpoint/${user.getMail()}/testNode");
+    socket.onmessage = function(event){
+        console.log(event);
+    };
+    
   function load_data(){
   $.ajax({
       //url: "webresources/datapoint/${moduleUser}/${moduleCollection[0]}",
