@@ -5,7 +5,7 @@
      <c:forEach items="${collection.getModuleList()}" var="module">
         <jsp:include page="/WEB-INF/modules/${module.getJsp()}">             
              <jsp:param name="moduleUser" value="${collection.getOwner().getMail()}"/>
-            <jsp:param name="moduleCollection" value="${collection.getNodeList().get(0).getNodePK().getName()}"/>
+             <jsp:param name="moduleCollection" value="${(collection.getNodeList().size() > 0) ? collection.getNodeList().get(0).getNodePK().getName() : ""}"/>
         </jsp:include>
     </c:forEach>
 </c:forEach>

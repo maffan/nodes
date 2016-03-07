@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import services.CollectionService;
+import services.DatapointService;
 import services.NodeService;
 import services.UserService;
 
@@ -35,6 +36,8 @@ UserService userService;
 NodeService nodeService;
 @Inject
 CollectionService collectionService;
+@Inject
+DatapointService datapointService;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -46,7 +49,7 @@ CollectionService collectionService;
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String username;
-        String node;
+        String nodeName;
         String collection;
         String msg;
         NodePK nodeKey;
@@ -57,8 +60,8 @@ CollectionService collectionService;
             switch(action){
             case "createnode":
                 username = request.getParameter("username");
-                node = request.getParameter("newnodename");
-                Node newNode = new Node(node, username);
+                nodeName = request.getParameter("newnodename");
+                Node newNode = new Node(nodeName, username);
                 nodeService.create(newNode);
                 
                 session.setAttribute("user", userService.find(username));
@@ -77,8 +80,8 @@ CollectionService collectionService;
                 break;
             case "deletenode":
                 username = request.getParameter("username");
-                node = request.getParameter("value");
-                nodeKey = new NodePK(node, username);
+                nodeName = request.getParameter("value");
+                nodeKey = new NodePK(nodeName, username);
                 nodeService.delete(nodeKey);
                 
                 session.setAttribute("user", userService.find(username));
@@ -94,10 +97,10 @@ CollectionService collectionService;
                 break;
             case "addtocollection":
                 username = request.getParameter("username");
-                node = request.getParameter("value");
+                nodeName = request.getParameter("value");
                 collection = request.getParameter("value2");
                 
-                nodeKey = new NodePK(node, username);
+                nodeKey = new NodePK(nodeName, username);
                 Node n = nodeService.find(nodeKey);
                 
                 removeFromCollections(nodeKey);
@@ -112,10 +115,19 @@ CollectionService collectionService;
                 break;
             case "removefromcollection":
                 username = request.getParameter("username");
-                node = request.getParameter("value");
+                nodeName = request.getParameter("value");
                 
-                removeFromCollections(node, username);
+                removeFromCollections(nodeName, username);
                 
+                session.setAttribute("user", userService.find(username));
+                response.sendRedirect("nodes");
+                break;
+            case "deletedatapoints":
+                username = request.getParameter("username");
+                nodeName = request.getParameter("value");
+                nodeKey = new NodePK(nodeName, username);
+                
+                datapointService.deleteForNode(nodeService.find(nodeKey));
                 session.setAttribute("user", userService.find(username));
                 response.sendRedirect("nodes");
                 break;
@@ -124,6 +136,7 @@ CollectionService collectionService;
             }
             
         }catch(Exception e){
+            e.printStackTrace();
             response.sendRedirect("nodes");
         }
 
