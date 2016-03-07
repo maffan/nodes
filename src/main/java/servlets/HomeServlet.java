@@ -35,6 +35,7 @@ NodeService nodeService;
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+            request.setAttribute("collections", userService.);
             request.getRequestDispatcher(HomeRouter.TEMPLATE + "?partial=user").forward(request, response);
     }
 
