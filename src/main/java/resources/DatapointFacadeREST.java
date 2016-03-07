@@ -10,6 +10,7 @@ import entities.DatapointPK;
 import entities.Node;
 import entities.NodePK;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -24,6 +25,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import persistence.DAO;
+import services.DatapointService;
 import services.NodeService;
 import websocket.WebsocketSessionHandler;
 
@@ -42,6 +44,9 @@ public class DatapointFacadeREST extends DAO<Datapoint,DatapointPK> {
     private NodeService nodeService;
     
     @Inject
+    private DatapointService datapointService;
+    
+    @Inject
     private WebsocketSessionHandler sessionHandler;
 
     public DatapointFacadeREST() {
@@ -53,8 +58,8 @@ public class DatapointFacadeREST extends DAO<Datapoint,DatapointPK> {
     public void create(Datapoint entity) {
         entity.getDatapointPK().setTime(new Date());
         NodePK nodePK = new NodePK(entity.getDatapointPK().getNode(), entity.getDatapointPK().getOwner());
-        sessionHandler.messageAll(nodePK);
         super.create(entity);
+        sessionHandler.messageAll(nodePK);
     }
     
     @GET
@@ -67,6 +72,23 @@ public class DatapointFacadeREST extends DAO<Datapoint,DatapointPK> {
             return fetchedNode.getDatapointList();
         else
             return new ArrayList();
+    }
+    
+    @GET
+    @Path("{owner}/{node}/{hours}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Datapoint> findLastDaysForNode(@PathParam("owner") String owner, @PathParam("node") String node, @PathParam("hours") int hours){
+        Node fetchedNode = nodeService.find(new NodePK(node, owner));
+        if(fetchedNode != null){
+            Date now = new Date();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(now);
+            calendar.add(Calendar.HOUR, -hours);
+            Date past = calendar.getTime();
+            return datapointService.getForNodeAfterDate(fetchedNode, past, now);
+        }
+        else
+            return new ArrayList();       
     }
     
 

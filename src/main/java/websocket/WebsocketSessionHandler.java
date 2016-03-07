@@ -46,7 +46,8 @@ public class WebsocketSessionHandler {
 
     public void messageAll(NodePK nodePK) {
         for(Session session : sessions.get(nodePK)){
-            session.getAsyncRemote().sendText("New data available");
+            if(session != null)
+                session.getAsyncRemote().sendText("New data available");
         }
     }
 }

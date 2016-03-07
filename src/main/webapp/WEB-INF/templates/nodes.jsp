@@ -4,11 +4,14 @@
 <script src="${res}/js/nodes.js"></script>
 <div class="col-md-6">
     <table class="table table-striped">
-        <th colspan="3">Nodes</th>
+        <th colspan="">Nodes</th>
+        <th>Collection</th>
+        <th>Delete</th>
     <c:forEach items="${user.getNodeList()}" var="node">
         <c:set var="gotCollection" value="${node.getCollectionList().size() > 0 ? true : false }"></c:set>
+        <c:set var="gotDataPoints" value="${node.getDatapointList().size() > 0 ? true : false}"></c:set>
         <tr>
-            <td width="100%" class="center-table">${node.getNodePK().getName()}</td>
+            <td class="center-table">${node.getNodePK().getName()}</td>
             <td><div class="dropdown">
                     <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         ${node.getCollectionList().size() > 0 ? node.getCollectionList().get(0).getName() : "Select collection" }
@@ -25,7 +28,10 @@
                     </ul>
                   </div>
                 </td>
-            <td class="pull-right"><button class="btn btn-danger delete_node ${gotCollection ? 'disabled' : ''}" ${gotCollection ? ("data-toggle='tooltip' data-placement='top' title='Remove from group to delete'") : "enabled"} onclick="deleteNode('${user.getMail()}','${node.getNodePK().getName()}')">Delete</button></td>
+                <td>
+                    <button class="btn btn-danger delete_node ${gotDataPoints ? 'disabled' : ''}" ${gotDataPoints ? ("data-toggle='tooltip' data-placement='top' title='Remove datapoints to delete node'") : "enabled"} <c:if test="${gotDataPoints == false}"> onclick="deleteNode('${user.getMail()}','${node.getNodePK().getName()}')" </c:if>>Node</button>
+                    <c:if test="${gotDataPoints == true}"><button class="btn btn-warning" onclick="deleteDataPoints('${user.getMail()}','${node.getNodePK().getName()}')" >Datapoints</button></c:if>
+                </td>
         </tr>
     </c:forEach>
     </table>

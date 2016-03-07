@@ -5,7 +5,10 @@
  */
 package entities;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -93,8 +96,17 @@ public class Collection implements Serializable {
 
     @XmlTransient
     public List<Node> getNodeList() {
-        System.out.println(nodeList.size());
+        nodeList.size();
         return nodeList;
+    }
+    
+    public String getNodeListAsJson(){
+        List<String> nodeNameList = new ArrayList<>();
+        for(Node node : getNodeList()){
+            nodeNameList.add(node.getNodePK().getName());
+        }
+        Gson gson = new Gson();
+        return gson.toJson(nodeNameList);
     }
 
     public void setNodeList(List<Node> nodeList) {
