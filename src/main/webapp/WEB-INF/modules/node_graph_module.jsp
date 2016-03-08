@@ -3,6 +3,7 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
     var nodes = ${param.moduleNodeList}
+    var doUpdates = true;
     $(function() {       
         nodes.forEach(function(node){
         var div = document.createElement('div');
@@ -38,7 +39,9 @@
         { 
             console.log("Received data for " + node);
             console.log(data);
-            load_data();
+            if(!$('#doPause')[0].checked){
+                load_data();
+            }
         };
 
         ws.onclose = function()
@@ -72,5 +75,7 @@
   
     
 </script>
+
+<label for="doPause">Pause</label><input type="checkbox" id="doPause">
 
 <div id="nodes"/>
