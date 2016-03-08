@@ -5,6 +5,7 @@
  */
 package resources;
 
+import entities.Collection;
 import entities.Datapoint;
 import entities.DatapointPK;
 import entities.Node;
@@ -25,6 +26,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import persistence.DAO;
+import services.CollectionService;
 import services.DatapointService;
 import services.NodeService;
 import websocket.WebsocketSessionHandler;
@@ -45,6 +47,9 @@ public class DatapointFacadeREST extends DAO<Datapoint,DatapointPK> {
     
     @Inject
     private DatapointService datapointService;
+    
+    @Inject
+    private CollectionService collectionService;
     
     @Inject
     private WebsocketSessionHandler sessionHandler;
@@ -69,7 +74,7 @@ public class DatapointFacadeREST extends DAO<Datapoint,DatapointPK> {
 
         Node fetchedNode = nodeService.find(new NodePK(node, owner));
         if(fetchedNode != null)
-            return fetchedNode.getDatapointList();
+            return datapointService.getLatestForNode(fetchedNode, 100, true);
         else
             return new ArrayList();
     }
@@ -85,12 +90,72 @@ public class DatapointFacadeREST extends DAO<Datapoint,DatapointPK> {
             calendar.setTime(now);
             calendar.add(Calendar.HOUR, -hours);
             Date past = calendar.getTime();
-            return datapointService.getForNodeAfterDate(fetchedNode, past, now);
+            return datapointService.getForNodeBetweenDates(fetchedNode, past, now);
         }
         else
             return new ArrayList();       
     }
     
+    @GET
+    @Path("collection/{collectionId}/average")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getAverageValueForCollection(@PathParam("collectionId") int collectionId){
+        Collection collection = collectionService.find(collectionId);
+        if(collection == null)
+            return "false";
+        return String.format("%.2f", datapointService.getAverageForCollection(collection));
+    }
+    @GET
+    @Path("collection/{collectionId}/max")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getMaxValueForCollection(@PathParam("collectionId") int collectionId){
+        Collection collection = collectionService.find(collectionId);
+        if(collection == null)
+            return "false";
+        return String.format("%d", datapointService.getMaxForCollection(collection));
+    }
+    @GET
+    @Path("collection/{collectionId}/min")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getMinValueForCollection(@PathParam("collectionId") int collectionId){
+        Collection collection = collectionService.find(collectionId);
+        if(collection == null)
+            return "false";
+        return String.format("%d", datapointService.getMinForCollection(collection));
+    }
+    
+    @GET
+    @Path("{owner}/{node}/average")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getAverageForNode(@PathParam("owner") String owner, @PathParam("node") String node) {
+        Node fetchedNode = nodeService.find(new NodePK(node, owner));
+        if(fetchedNode != null)
+            return String.format("%.2f", datapointService.getAverageForNode(fetchedNode));
+        else
+            return "false";
+    }
+    
+    @GET
+    @Path("{owner}/{node}/max")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getMaxForNode(@PathParam("owner") String owner, @PathParam("node") String node) {
+        Node fetchedNode = nodeService.find(new NodePK(node, owner));
+        if(fetchedNode != null)
+            return String.format("%d", datapointService.getMaxForNode(fetchedNode));
+        else
+            return "false";
+    }
+    
+    @GET
+    @Path("{owner}/{node}/min")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getMinForNode(@PathParam("owner") String owner, @PathParam("node") String node) {
+        Node fetchedNode = nodeService.find(new NodePK(node, owner));
+        if(fetchedNode != null)
+            return String.format("%d", datapointService.getMinForNode(fetchedNode));
+        else
+            return "false";
+    }
 
     @Override
     protected EntityManager getEntityManager() {

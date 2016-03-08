@@ -12,7 +12,7 @@
         <li><a href="home?resolution=168">Latest Week</a></li>
         <li><a href="home?resolution=672">Latest Month</a></li>
         <li><a href="home?resolution=8064">Latest Year</a></li>
-        <li><a href="home">All</a></li>
+        <li><a href="home">100 Latest Values (Default)</a></li>
         </ul>
     </div>
     <a href="#" class="pull-right">Edit Modules</a>
@@ -29,6 +29,7 @@
                          <jsp:param name="moduleUser" value="${collection.getOwner().getMail()}"/>
                          <jsp:param name="moduleNodeList" value="${collection.getNodeListAsJson()}"/>
                          <jsp:param name="resolution" value="${param.resolution}"/>
+                         <jsp:param name="collectionId" value="${collection.getId()}"/>
                     </jsp:include>
                  </div>
             </div>
