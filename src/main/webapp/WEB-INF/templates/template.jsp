@@ -24,6 +24,8 @@
                 </div>
                 <c:if test="${user != null}">
                     <ul class="nav navbar-nav navbar-right">
+                        <li><a href="${root}/">Start</a></li>
+                        <li><a href="${root}/modules">Modules</a></li>
                         <li><a href="${root}/nodes">Nodes</a></li>
                         <li><a href="${root}/settings">Settings</a></li>
                         <li><a href="${root}/logout">Logout</a></li>
