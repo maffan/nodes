@@ -4,6 +4,7 @@
 <script>
     var nodes = ${param.moduleNodeList}
     var doUpdates = true;
+    var dateOptions = {weekday: "long", year: "numeric", month: "long", day: 'numeric'}
     $(function () {
         nodes.forEach(function (node) {
             var div = document.createElement('div');
@@ -77,7 +78,7 @@
                 tableData.addColumn('number', node);
                 if (data.length > 0) {
                     for (dataPointIndex in data) {
-                        tableData.addRow([data[dataPointIndex].datapointPK.time, data[dataPointIndex].data]);
+                        tableData.addRow([new Date(data[dataPointIndex].datapointPK.time).toLocaleString(), data[dataPointIndex].data]);
                     }
                 }
                 else{
