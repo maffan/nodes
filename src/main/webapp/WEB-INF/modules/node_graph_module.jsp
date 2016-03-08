@@ -15,11 +15,6 @@
     google.charts.setOnLoadCallback(load_data);
       function drawChart(data, node) {
       var options = {
-        chart: {
-          title: 'Values reported in by this Node',
-          subtitle: 'Presented in a cool fasion'
-        },
-        height: 500,
         axes: {
           x: {
             0: {side: 'top'}
