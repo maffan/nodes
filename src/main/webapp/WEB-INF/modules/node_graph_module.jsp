@@ -13,7 +13,7 @@
     });
     
     google.charts.load('current', {packages: ['line']});
-    google.charts.setOnLoadCallback(load_data);
+    google.charts.setOnLoadCallback(load_data_for_all_nodes);
       function drawChart(data, node) {
       var options = {
         axes: {
@@ -40,7 +40,7 @@
             console.log("Received data for " + node);
             console.log(data);
             if(!$('#doPause')[0].checked){
-                load_data();
+                load_data_for_node(node);
             }
         };
 
@@ -51,9 +51,8 @@
     });
     
     
-  function load_data(){
-      nodes.forEach(function(node){
-          $.ajax({
+    function load_data_for_node(node){
+        $.ajax({
             url: "webresources/datapoint/${param.moduleUser}/" + node + "/${param.resolution}",
             //url: "webresources/datapoint/admin/testNode",
             headers: {"APIKey": "${user.getApi()}", "owner": "${user.getMail()}"},
@@ -69,6 +68,11 @@
                               drawChart(tableData, node);
                           }
         });
+    }
+    
+  function load_data_for_all_nodes(){
+      nodes.forEach(function(node){
+          load_data_for_node(node);
       });
   }
 
