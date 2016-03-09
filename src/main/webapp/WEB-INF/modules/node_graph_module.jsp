@@ -21,7 +21,7 @@
 
             ws.onmessage = function (data)
             {
-                if (!$('#doPause')[0].checked) {
+                if ($('#doPause').val() == 'false'){
                     load_data_and_draw_node(ws.chart, node, false);
                 }
             };
@@ -53,7 +53,7 @@
                 options.vAxis = {};
                 options.vAxis.baseline = 0;
             }
-            if (!$('#doPause')[0].checked) {
+            if ($('#doPause').val() == 'false'){
                 chart.draw(data, options);
             }
         }

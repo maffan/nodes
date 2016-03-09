@@ -42,7 +42,7 @@
         {
             console.log("Received data for collection: " + collection);
             console.log(data);
-            if (!$('#doPause')[0].checked) {
+            if ($('#doPause').val() == 'false') {
                 load_data_and_draw_collection();
             }
         };
@@ -55,6 +55,5 @@
         
     });
 </script>
-<div class="col-md-12">
-    <div id="gauges_div_${param.collectionId}"></div>
-</div>
+<div id="gauges_div_${param.collectionId}"></div>
+

@@ -16,7 +16,7 @@
             for(var node in tableData){
                 data.addRow([node, tableData[node][0], tableData[node][1], tableData[node][2], tableData[node][3]]);
             }
-            if (!$('#doPause')[0].checked) {
+            if ($('#doPause').val() == 'false'){
                 table.draw(data, {width: '100%', height: '100%'});
             }
         }
@@ -58,7 +58,7 @@
 
             ws.onmessage = function (data)
             {
-                if (!$('#doPause')[0].checked) {
+                if ($('#doPause').val() == 'false'){
                     load_data_and_draw_node(node);
                 }
             };
@@ -71,6 +71,4 @@
         });
     });
 </script>
-<div class="col-md-12">
-    <div id="table_div_${param.collectionId}"></div>
-</div>
+<div id="table_div_${param.collectionId}"></div>

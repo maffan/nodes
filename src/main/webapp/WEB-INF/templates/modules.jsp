@@ -11,7 +11,7 @@
       </div>
       <div class="panel-body">
         <div class="col-md-6">
-          <img src="//placehold.it/150x150">
+          <img src="${res}/images/graphs.png">
         </div>
             <div class="col-md-6">
           Display your temperature readings in a nice graph. One graph per node.
@@ -26,7 +26,7 @@
       </div>
       <div class="panel-body">
         <div class="col-md-6">
-          <img src="//placehold.it/150x150">
+          <img src="${res}/images/gauge.png">
         </div>
             <div class="col-md-6">
           Show a collections average temperature. All nodes displayed as one value.
@@ -41,7 +41,7 @@
       </div>
       <div class="panel-body">
         <div class="col-md-6">
-          <img src="//placehold.it/150x150">
+          <img src="${res}/images/stat.png">
         </div>
             <div class="col-md-6">
           Detailed statistics about each node, max, min and average temperatures

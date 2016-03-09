@@ -3,23 +3,26 @@
 <c:set var="res" value="${pageContext.request.contextPath}/resources" />
 <script>var startupFunctions = [];</script>
 
-<div class="row">
-    <div class="dropdown pull-left">
-        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
-            Resolution
-            <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-            <li><a href="home?resolution=1">Latest Hour</a></li>
-            <li><a href="home?resolution=24">Latest Day</a></li>
-            <li><a href="home?resolution=168">Latest Week</a></li>
-            <li><a href="home?resolution=672">Latest Month</a></li>
-            <li><a href="home?resolution=8064">Latest Year</a></li>
-            <li><a href="home">100 Latest Values (Default)</a></li>
-        </ul>
+<div class="row pad">
+    <div class="col-md-12">
+        <div class="dropdown pull-left">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                Resolution
+                <span class="caret"></span>
+            </button>
+            <button class="btn btn-success" onclick="setPause()" id="pauseBtn">Module updates enabled <span class="glyphicon glyphicon-pause" aria-hidden="true"></span></button>
+            <ul class="dropdown-menu">
+                <li><a href="home?resolution=1">Latest Hour</a></li>
+                <li><a href="home?resolution=24">Latest Day</a></li>
+                <li><a href="home?resolution=168">Latest Week</a></li>
+                <li><a href="home?resolution=672">Latest Month</a></li>
+                <li><a href="home?resolution=8064">Latest Year</a></li>
+                <li><a href="home">100 Latest Values (Default)</a></li>
+            </ul>
+        </div>
+        <input type="hidden" id="doPause" value="false">
+        <a href="modules" class="btn btn-default pull-right">Edit Modules</a>
     </div>
-    <label for="doPause">Pause</label><input type="checkbox" id="doPause">
-    <a href="#" class="pull-right">Edit Modules</a>
 </div>
 <c:forEach items="${user.getCollectionList()}" var="collection">
     <c:if test="${collection.getModuleList().size() > 0}">
