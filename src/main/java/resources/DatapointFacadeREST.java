@@ -129,7 +129,7 @@ public class DatapointFacadeREST extends DAO<Datapoint, DatapointPK> {
     @GET
     @Path("collection/{collectionId}/average/{hours}")
     @Produces({MediaType.APPLICATION_JSON})
-    public String getAverageValueForCollection(@PathParam("collectionId") int collectionId, int hours) {
+    public String getAverageValueForCollection(@PathParam("collectionId") int collectionId, @PathParam("hours") int hours) {
         Collection collection = collectionService.find(collectionId);
         Date now = new Date();
         Date past = getCorrectedDate(now, hours);
