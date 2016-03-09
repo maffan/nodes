@@ -1,48 +1,41 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
     startupFunctions.push(function () {
-        var nodes = ${param.moduleNodeList}
-        $(function () {
-            nodes.forEach(function (node) {
-                var div = document.createElement('div');
-                div.id = "graph_div_${param.collectionId}_" + node;
-                $('#graph_div_${param.collectionId}').append(div);
-            });
+        var nodes = ${param.moduleNodeList} 
+        $('#graph_div_${param.collectionId}').css("height", 200*nodes.length);
+        nodes.forEach(function (node) {
+            var div = document.createElement('div');
+            div.id = "graph_div_${param.collectionId}_" + node;
+            $('#graph_div_${param.collectionId}').append(div);
         });
 
-        google.charts.load('current', {packages: ['line']});
-        google.charts.setOnLoadCallback(initCharts);
 
-        function initCharts() {
-            nodes.forEach(function (node) {
-                var ws = new WebSocket("ws://localhost:8080/nodes/websocket/${param.moduleUser}/" + node);
-                ws.chart = new google.charts.Line(document.getElementById("graph_div_${param.collectionId}_" + node));
-                ws.onopen = function ()
-                {
-                    console.log("Websocket for " + node + " connected");
+        nodes.forEach(function (node) {
+            var ws = new WebSocket("ws://localhost:8080/nodes/websocket/${param.moduleUser}/" + node);
+            ws.chart = new google.charts.Line(document.getElementById("graph_div_${param.collectionId}_" + node));
+            ws.onopen = function ()
+            {
+                console.log("Websocket for " + node + " connected");
 
-                };
+            };
 
-                ws.onmessage = function (data)
-                {
-                    console.log("Received data for " + node);
-                    console.log(data);
-                    if (!$('#doPause')[0].checked) {
-                        load_data_and_draw_node(ws.chart, node, false);
-                    }
-                };
+            ws.onmessage = function (data)
+            {
+                if (!$('#doPause')[0].checked) {
+                    load_data_and_draw_node(ws.chart, node, false);
+                }
+            };
 
-                ws.onclose = function ()
-                {
-                    console.log("Websocket for " + node + " closed");
-                };
-                load_data_and_draw_node(ws.chart, node, true);
-            });
-        }
+            ws.onclose = function ()
+            {
+                console.log("Websocket for " + node + " closed");
+            };
+            load_data_and_draw_node(ws.chart, node, true);
+        });
+
         function drawChart(chart, data, init) {
             var options = {
+                height: 200,
                 animation: {
                     duration: 1000,
                     easing: 'linear'
@@ -60,7 +53,9 @@
                 options.vAxis = {};
                 options.vAxis.baseline = 0;
             }
-            chart.draw(data, options);
+            if (!$('#doPause')[0].checked) {
+                chart.draw(data, options);
+            }
         }
 
 
@@ -100,6 +95,4 @@
 
 </script>
 
-<label for="doPause">Pause</label><input type="checkbox" id="doPause">
-
-<div id="graph_div_${collectionId}"/>
+<div id="graph_div_${param.collectionId}"></div>

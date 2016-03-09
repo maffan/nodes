@@ -136,4 +136,9 @@ public class DatapointService extends DAO<Datapoint, DatapointPK> {
         }
         return min;
     }
+
+    public int getLatestForNode(Node fetchedNode) {
+        List<Datapoint> latestDataPoint = getLatestForNode(fetchedNode, 1, false);
+        return latestDataPoint.size() > 0 ? latestDataPoint.get(0).getData() : 0;
+    }
 }

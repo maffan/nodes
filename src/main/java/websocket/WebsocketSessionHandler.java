@@ -65,14 +65,19 @@ public class WebsocketSessionHandler {
     }
 
     public void messageAll(Node node) {
-        for(Session session : nodeSessions.get(node.getNodePK())){
-            if(session != null)
-                session.getAsyncRemote().sendText("New data available");
+        if(nodeSessions.containsKey(node.getNodePK())){
+            for(Session session : nodeSessions.get(node.getNodePK())){
+                if(session != null)
+                    session.getAsyncRemote().sendText("New data available");
+            }
         }
         List<Collection> collectionList = node.getCollectionList();
         for(Collection collection : collectionList){
-            for(Session session : collectionSessions.get(collection.getId())){
-                session.getAsyncRemote().sendText("New data available");
+            if(collectionSessions.containsKey(collection.getId())){
+                for(Session session : collectionSessions.get(collection.getId())){
+                    if(session != null)
+                        session.getAsyncRemote().sendText("New data available");
+                }
             }
         }
     }

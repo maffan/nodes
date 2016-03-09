@@ -37,20 +37,20 @@ import websocket.WebsocketSessionHandler;
  */
 @Stateless
 @Path("datapoint")
-public class DatapointFacadeREST extends DAO<Datapoint,DatapointPK> {
+public class DatapointFacadeREST extends DAO<Datapoint, DatapointPK> {
 
     @PersistenceContext(unitName = "se.nomorebagels_nodes_war_1.0-SNAPSHOTPU")
     private EntityManager entityManager;
-    
+
     @Inject
     private NodeService nodeService;
-    
+
     @Inject
     private DatapointService datapointService;
-    
+
     @Inject
     private CollectionService collectionService;
-    
+
     @Inject
     private WebsocketSessionHandler sessionHandler;
 
@@ -66,95 +66,117 @@ public class DatapointFacadeREST extends DAO<Datapoint,DatapointPK> {
         super.create(entity);
         sessionHandler.messageAll(nodeService.find(nodePK));
     }
-    
+
     @GET
     @Path("{owner}/{node}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<Datapoint> findAllForNode(@PathParam("owner") String owner, @PathParam("node") String node) {
 
         Node fetchedNode = nodeService.find(new NodePK(node, owner));
-        if(fetchedNode != null)
+        if (fetchedNode != null) {
             return datapointService.getLatestForNode(fetchedNode, 100, true);
-        else
+        } else {
             return new ArrayList();
+        }
     }
     
     @GET
+    @Path("{owner}/{node}/latest")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String findLatestForNode(@PathParam("owner") String owner, @PathParam("node") String node) {
+
+        Node fetchedNode = nodeService.find(new NodePK(node, owner));
+        if (fetchedNode != null) {
+            return String.format("%d", datapointService.getLatestForNode(fetchedNode));
+        } else {
+            return "0";
+        }
+    }
+
+    @GET
     @Path("{owner}/{node}/{hours}")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<Datapoint> findLastDaysForNode(@PathParam("owner") String owner, @PathParam("node") String node, @PathParam("hours") int hours){
+    public List<Datapoint> findLastDaysForNode(@PathParam("owner") String owner, @PathParam("node") String node, @PathParam("hours") int hours) {
         Node fetchedNode = nodeService.find(new NodePK(node, owner));
-        if(fetchedNode != null){
+        if (fetchedNode != null) {
             Date now = new Date();
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(now);
             calendar.add(Calendar.HOUR, -hours);
             Date past = calendar.getTime();
             return datapointService.getForNodeBetweenDates(fetchedNode, past, now);
+        } else {
+            return new ArrayList();
         }
-        else
-            return new ArrayList();       
     }
-    
+
     @GET
     @Path("collection/{collectionId}/average")
     @Produces({MediaType.APPLICATION_JSON})
-    public String getAverageValueForCollection(@PathParam("collectionId") int collectionId){
+    public String getAverageValueForCollection(@PathParam("collectionId") int collectionId) {
         Collection collection = collectionService.find(collectionId);
-        if(collection == null)
+        if (collection == null) {
             return "false";
+        }
         return String.format("%.2f", datapointService.getAverageForCollection(collection));
     }
+
     @GET
     @Path("collection/{collectionId}/max")
     @Produces({MediaType.APPLICATION_JSON})
-    public String getMaxValueForCollection(@PathParam("collectionId") int collectionId){
+    public String getMaxValueForCollection(@PathParam("collectionId") int collectionId) {
         Collection collection = collectionService.find(collectionId);
-        if(collection == null)
+        if (collection == null) {
             return "false";
+        }
         return String.format("%d", datapointService.getMaxForCollection(collection));
     }
+
     @GET
     @Path("collection/{collectionId}/min")
     @Produces({MediaType.APPLICATION_JSON})
-    public String getMinValueForCollection(@PathParam("collectionId") int collectionId){
+    public String getMinValueForCollection(@PathParam("collectionId") int collectionId) {
         Collection collection = collectionService.find(collectionId);
-        if(collection == null)
+        if (collection == null) {
             return "false";
+        }
         return String.format("%d", datapointService.getMinForCollection(collection));
     }
-    
+
     @GET
     @Path("{owner}/{node}/average")
     @Produces({MediaType.APPLICATION_JSON})
     public String getAverageForNode(@PathParam("owner") String owner, @PathParam("node") String node) {
         Node fetchedNode = nodeService.find(new NodePK(node, owner));
-        if(fetchedNode != null)
+        if (fetchedNode != null) {
             return String.format("%.2f", datapointService.getAverageForNode(fetchedNode));
-        else
+        } else {
             return "false";
+        }
     }
-    
+
     @GET
     @Path("{owner}/{node}/max")
     @Produces({MediaType.APPLICATION_JSON})
     public String getMaxForNode(@PathParam("owner") String owner, @PathParam("node") String node) {
         Node fetchedNode = nodeService.find(new NodePK(node, owner));
-        if(fetchedNode != null)
+        if (fetchedNode != null) {
             return String.format("%d", datapointService.getMaxForNode(fetchedNode));
-        else
+        } else {
             return "false";
+        }
     }
-    
+
     @GET
     @Path("{owner}/{node}/min")
     @Produces({MediaType.APPLICATION_JSON})
     public String getMinForNode(@PathParam("owner") String owner, @PathParam("node") String node) {
         Node fetchedNode = nodeService.find(new NodePK(node, owner));
-        if(fetchedNode != null)
+        if (fetchedNode != null) {
             return String.format("%d", datapointService.getMinForNode(fetchedNode));
-        else
+        } else {
             return "false";
+        }
     }
 
     @Override
@@ -162,5 +184,4 @@ public class DatapointFacadeREST extends DAO<Datapoint,DatapointPK> {
         return this.entityManager;
     }
 
-    
 }

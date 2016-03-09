@@ -16,7 +16,7 @@
         <link rel="stylesheet" type="text/css" href="${res}/css/custom.css" />
         <link rel="icon" type="image/png" href="${res}/img/favicon.png">
     </head>
-    <body class="container">
+    <body class="container" style="height: 2000px; overflow: auto">
         <c:set var="root" value="${pageContext.request.contextPath}" />
         <nav class="navbar navbar-default" role="navigation">
             <div class="container-fluid">
@@ -35,8 +35,8 @@
             </div>
         </nav>   
         <!-- Insert the dynamic content -->
-        <div class="panel panel-default">
-            <div class="panel-body"><jsp:include page="${param.partial}.jsp" /></div>
+        <div>
+            <div><jsp:include page="${param.partial}.jsp" /></div>
         </div>
     </body>
 </html>
