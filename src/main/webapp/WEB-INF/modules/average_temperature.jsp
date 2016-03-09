@@ -18,8 +18,7 @@
 
             ws.onmessage = function (data)
             {
-                console.log("Received data for " + collection);
-                console.log(data);
+
                 load_data_and_draw_node(ws.chart, collection, false);
             };
 

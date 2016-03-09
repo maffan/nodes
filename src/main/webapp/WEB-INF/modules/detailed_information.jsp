@@ -28,17 +28,17 @@
                 type: 'GET'
                 }),
                 averageCall = $.ajax({
-                    url: "webresources/datapoint/${param.moduleUser}/" + node + "/average",
+                    url: "webresources/datapoint/${param.moduleUser}/" + node + "/average/${param.resolution}",
                     headers: {"APIKey": "${user.getApi()}", "owner": "${user.getMail()}"},
                     type: 'GET'
                 }),
                 maxCall = $.ajax({
-                    url: "webresources/datapoint/${param.moduleUser}/" + node + "/max",
+                    url: "webresources/datapoint/${param.moduleUser}/" + node + "/max/${param.resolution}",
                     headers: {"APIKey": "${user.getApi()}", "owner": "${user.getMail()}"},
                     type: 'GET'
                 }),
                 minCall = $.ajax({
-                    url: "webresources/datapoint/${param.moduleUser}/" + node + "/min",
+                    url: "webresources/datapoint/${param.moduleUser}/" + node + "/min/${param.resolution}",
                     headers: {"APIKey": "${user.getApi()}", "owner": "${user.getMail()}"},
                     type: 'GET'
                 });
@@ -58,8 +58,6 @@
 
             ws.onmessage = function (data)
             {
-                console.log("Received data for " + node);
-                console.log(data);
                 if (!$('#doPause')[0].checked) {
                     load_data_and_draw_node(node);
                 }

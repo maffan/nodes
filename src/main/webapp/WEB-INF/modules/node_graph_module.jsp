@@ -67,7 +67,6 @@
                 headers: {"APIKey": "${user.getApi()}", "owner": "${user.getMail()}"},
                 type: 'GET',
                 success: function (data) {
-                    console.log(data);
                     var tableData = new google.visualization.DataTable();
                     tableData.addColumn('string', 'Date');
                     tableData.addColumn('number', node);

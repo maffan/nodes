@@ -67,9 +67,9 @@ public class DatapointService extends DAO<Datapoint, DatapointPK> {
         return result;
     }
     
-    public double getAverageForNode(Node node){
+    public double getAverageForDatapoints(List<Datapoint> datapoints){
         List<Integer> listOfAverages = new ArrayList<>();
-        for(Datapoint datapoint : node.getDatapointList()){
+        for(Datapoint datapoint : datapoints){
             listOfAverages.add(datapoint.getData());
         }
         int sum = 0;
@@ -80,12 +80,20 @@ public class DatapointService extends DAO<Datapoint, DatapointPK> {
             return (double)sum / (double)listOfAverages.size();
         else
             return 0;
-    } 
+    }
+    
+    public double getAverageForNode(Node node, int amount){
+        return getAverageForDatapoints(getLatestForNode(node, amount, false));
+    }
+    
+    public double getAverageForNode(Node node, Date first, Date second){
+        return getAverageForDatapoints(getForNodeBetweenDates(node, first, second));
+    }
 
-    public double getAverageForCollection(Collection collection) {
+    public double getAverageForCollection(Collection collection, int amount) {
         List<Double> listOfAverages = new ArrayList<>();
         for(Node node : collection.getNodeList()){
-            listOfAverages.add(getAverageForNode(node));
+            listOfAverages.add(getAverageForNode(node, amount));
         }
         double sum = 0;
         for(Double value : listOfAverages){
@@ -97,10 +105,10 @@ public class DatapointService extends DAO<Datapoint, DatapointPK> {
             return 0;
     }
 
-    public int getMaxForCollection(Collection collection) {
+    public int getMaxForCollection(Collection collection, int amount) {
         List<Integer> listOfMaxes = new ArrayList<>();
         for(Node node : collection.getNodeList()){
-            listOfMaxes.add(getMaxForNode(node));
+            listOfMaxes.add(getMaxForNode(node, amount));
         }
         int max = Integer.MIN_VALUE;
         for(Integer value : listOfMaxes){
@@ -109,10 +117,10 @@ public class DatapointService extends DAO<Datapoint, DatapointPK> {
         return max;
     }
 
-    public int getMinForCollection(Collection collection) {
+    public int getMinForCollection(Collection collection, int amount) {
         List<Integer> listOfMaxes = new ArrayList<>();
         for(Node node : collection.getNodeList()){
-            listOfMaxes.add(getMinForNode(node));
+            listOfMaxes.add(getMinForNode(node, amount));
         }
         int min = Integer.MAX_VALUE;
         for(Integer value : listOfMaxes){
@@ -121,17 +129,17 @@ public class DatapointService extends DAO<Datapoint, DatapointPK> {
         return min;
     }
 
-    public Integer getMaxForNode(Node node) {
+    public Integer getMaxForNode(Node node, int amount) {
         int max = Integer.MIN_VALUE;
-        for(Datapoint datapoint : node.getDatapointList()){
+        for(Datapoint datapoint : getLatestForNode(node, amount, false)){
             max = datapoint.getData() > max ? datapoint.getData() : max;
         }
         return max;
     }
 
-    public Integer getMinForNode(Node node) {
+    public Integer getMinForNode(Node node, int amount) {
         int min = Integer.MAX_VALUE;
-        for(Datapoint datapoint : node.getDatapointList()){
+        for(Datapoint datapoint : getLatestForNode(node, amount, false)){
             min = datapoint.getData() < min ? datapoint.getData() : min;
         }
         return min;
@@ -140,5 +148,36 @@ public class DatapointService extends DAO<Datapoint, DatapointPK> {
     public int getLatestForNode(Node fetchedNode) {
         List<Datapoint> latestDataPoint = getLatestForNode(fetchedNode, 1, false);
         return latestDataPoint.size() > 0 ? latestDataPoint.get(0).getData() : 0;
+    }
+
+    public int getMaxForNode(Node fetchedNode, Date past, Date now) {
+        int max = Integer.MIN_VALUE;
+        for(Datapoint datapoint : getForNodeBetweenDates(fetchedNode, past, now)){
+            max = datapoint.getData() > max ? datapoint.getData() : max;
+        }
+        return max;
+    }
+
+    public int getMinForNode(Node fetchedNode, Date past, Date now) {
+        int min = Integer.MAX_VALUE;
+        for(Datapoint datapoint : getForNodeBetweenDates(fetchedNode, past, now)){
+            min = datapoint.getData() < min ? datapoint.getData() : min;
+        }
+        return min;
+    }
+
+    public double getAverageForCollection(Collection collection, Date past, Date now) {
+        List<Double> listOfAverages = new ArrayList<>();
+        for(Node node : collection.getNodeList()){
+            listOfAverages.add(getAverageForNode(node, past, now));
+        }
+        double sum = 0;
+        for(Double value : listOfAverages){
+            sum += value;
+        }
+        if(!listOfAverages.isEmpty())
+            return sum / (double)listOfAverages.size();
+        else
+            return 0;
     }
 }

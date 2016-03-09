@@ -100,14 +100,19 @@ public class DatapointFacadeREST extends DAO<Datapoint, DatapointPK> {
         Node fetchedNode = nodeService.find(new NodePK(node, owner));
         if (fetchedNode != null) {
             Date now = new Date();
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(now);
-            calendar.add(Calendar.HOUR, -hours);
-            Date past = calendar.getTime();
+            Date past = getCorrectedDate(now, hours);
             return datapointService.getForNodeBetweenDates(fetchedNode, past, now);
         } else {
             return new ArrayList();
         }
+    }
+
+    private Date getCorrectedDate(Date now, int hours) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(now);
+        calendar.add(Calendar.HOUR, -hours);
+        Date past = calendar.getTime();
+        return past;
     }
 
     @GET
@@ -118,7 +123,20 @@ public class DatapointFacadeREST extends DAO<Datapoint, DatapointPK> {
         if (collection == null) {
             return "false";
         }
-        return String.format("%.2f", datapointService.getAverageForCollection(collection));
+        return String.format("%.2f", datapointService.getAverageForCollection(collection, 100));
+    }
+    
+    @GET
+    @Path("collection/{collectionId}/average/{hours}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getAverageValueForCollection(@PathParam("collectionId") int collectionId, int hours) {
+        Collection collection = collectionService.find(collectionId);
+        Date now = new Date();
+        Date past = getCorrectedDate(now, hours);
+        if (collection == null) {
+            return "false";
+        }
+        return String.format("%.2f", datapointService.getAverageForCollection(collection, past, now));
     }
 
     @GET
@@ -129,7 +147,7 @@ public class DatapointFacadeREST extends DAO<Datapoint, DatapointPK> {
         if (collection == null) {
             return "false";
         }
-        return String.format("%d", datapointService.getMaxForCollection(collection));
+        return String.format("%d", datapointService.getMaxForCollection(collection, 100));
     }
 
     @GET
@@ -140,7 +158,7 @@ public class DatapointFacadeREST extends DAO<Datapoint, DatapointPK> {
         if (collection == null) {
             return "false";
         }
-        return String.format("%d", datapointService.getMinForCollection(collection));
+        return String.format("%d", datapointService.getMinForCollection(collection, 100));
     }
 
     @GET
@@ -149,7 +167,21 @@ public class DatapointFacadeREST extends DAO<Datapoint, DatapointPK> {
     public String getAverageForNode(@PathParam("owner") String owner, @PathParam("node") String node) {
         Node fetchedNode = nodeService.find(new NodePK(node, owner));
         if (fetchedNode != null) {
-            return String.format("%.2f", datapointService.getAverageForNode(fetchedNode));
+            return String.format("%.2f", datapointService.getAverageForNode(fetchedNode, 100));
+        } else {
+            return "false";
+        }
+    }
+    
+    @GET
+    @Path("{owner}/{node}/average/{hours}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getAverageForNode(@PathParam("owner") String owner, @PathParam("node") String node, @PathParam("hours") int hours){
+        Node fetchedNode = nodeService.find(new NodePK(node, owner));
+        if (fetchedNode != null) {
+            Date now = new Date();
+            Date past = getCorrectedDate(now, hours);
+            return String.format("%.2f", datapointService.getAverageForNode(fetchedNode, past, now));
         } else {
             return "false";
         }
@@ -161,7 +193,21 @@ public class DatapointFacadeREST extends DAO<Datapoint, DatapointPK> {
     public String getMaxForNode(@PathParam("owner") String owner, @PathParam("node") String node) {
         Node fetchedNode = nodeService.find(new NodePK(node, owner));
         if (fetchedNode != null) {
-            return String.format("%d", datapointService.getMaxForNode(fetchedNode));
+            return String.format("%d", datapointService.getMaxForNode(fetchedNode, 100));
+        } else {
+            return "false";
+        }
+    }
+    
+    @GET
+    @Path("{owner}/{node}/max/{hours}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getMaxForNode(@PathParam("owner") String owner, @PathParam("node") String node, @PathParam("hours") int hours) {
+        Node fetchedNode = nodeService.find(new NodePK(node, owner));
+        Date now = new Date();
+        Date past = getCorrectedDate(now, hours);
+        if (fetchedNode != null) {
+            return String.format("%d", datapointService.getMaxForNode(fetchedNode, past, now));
         } else {
             return "false";
         }
@@ -173,7 +219,21 @@ public class DatapointFacadeREST extends DAO<Datapoint, DatapointPK> {
     public String getMinForNode(@PathParam("owner") String owner, @PathParam("node") String node) {
         Node fetchedNode = nodeService.find(new NodePK(node, owner));
         if (fetchedNode != null) {
-            return String.format("%d", datapointService.getMinForNode(fetchedNode));
+            return String.format("%d", datapointService.getMinForNode(fetchedNode, 100));
+        } else {
+            return "false";
+        }
+    }
+    
+    @GET
+    @Path("{owner}/{node}/min/{hours}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getMinForNode(@PathParam("owner") String owner, @PathParam("node") String node, @PathParam("hours") int hours) {
+        Node fetchedNode = nodeService.find(new NodePK(node, owner));
+        Date now = new Date();
+        Date past = getCorrectedDate(now, hours);
+        if (fetchedNode != null) {
+            return String.format("%d", datapointService.getMinForNode(fetchedNode, past, now));
         } else {
             return "false";
         }
