@@ -1,92 +1,60 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <script>
-    startupFunctions.push(gauges-${collectionId});
-
-    var gauges-${collectionId} = {
-       
-    }
-    
-
-            function initCharts() {
-            var ws = new WebSocket("ws://localhost:8080/nodes/websocket/${param.collectionId}");
-            ws.chart = new google.charts.Line(document.getElementById(gauges-${collectionId}));
-            ws.onopen = function ()
-            {
-                console.log("Websocket for " + gauges-${collectionId} + " connected");
-
-            };
-
-            ws.onmessage = function (data)
-            {
-
-                load_data_and_draw_node(ws.chart, collection, false);
-            };
-
-            ws.onclose = function ()
-            {
-                console.log("Websocket for " + collection + " closed");
-            };
-
-            load_data_and_draw_node(ws.chart, collection, true);
-        };
-    
-    
-    function drawChart-${param.collectionId}(chart, data, init) {
-        var options = {
-            animation: {
-                duration: 1000,
-                easing: 'linear'
-            },
-            axes: {
-                x: {
-                    0: {side: 'top'}
-                }
+    startupFunctions.push(function () {
+        var collection = ${param.collectionId};
+        var gauge = new google.visualization.Gauge(document.getElementById('gauges_div_${param.collectionId}'));
+        var gaugeData = 0;
+        
+        function drawTable() {
+            var data = google.visualization.arrayToDataTable([
+                ['Label', 'Value'],
+                ['Temperature', gaugeData]
+              ]);
+            
+            if (!$('#doPause')[0].checked) {
+                gauge.draw(data, {width: '100%', height: '100%'});
             }
-        };
-        if (init) {
-            options.animation.duration = 1000;
-            options.hAxis = {};
-            options.hAxis.baseline = 0;
-            options.vAxis = {};
-            options.vAxis.baseline = 0;
         }
-        chart.draw(data, options);
-    }
 
+        function load_data_and_draw_collection() {
+            var averageCall = $.ajax({
+                    url: "webresources/datapoint/collection/${param.collectionId}/average/${param.resolution}",
+                    headers: {"APIKey": "${user.getApi()}", "owner": "${user.getMail()}"},
+                    type: 'GET'
+                });
+                
+            $.when(averageCall).done(function (avg) {
+                console.log("Collection: " + collection + " average temp: " + avg);
+                gaugeData = avg;
+                drawTable();
+            });
+        }
 
+        
+        var ws = new WebSocket("ws://localhost:8080/nodes/websocket/collection/" + collection);
 
-    function load_data_and_draw_node(chart, node, init) {
-        $.ajax({
-            url: "webresources/datapoint/${param.moduleUser}/${param.collectionId}",
-            //url: "webresources/datapoint/admin/testNode",
-            headers: {"APIKey": "${user.getApi()}", "owner": "${user.getMail()}"},
-            type: 'GET',
-            success: function (data) {
-                console.log(data);
-                var tableData = new google.visualization.DataTable();
-                tableData.addColumn('string', 'Date');
-                tableData.addColumn('number', node);
-                if (data.length > 0) {
-                    for (dataPointIndex in data) {
-                        tableData.addRow([new Date(data[dataPointIndex].datapointPK.time).toLocaleString(), data[dataPointIndex].data]);
-                    }
-                }
-                else{
-                    tableData.addRow(["", null]);
-                }
-                drawChart-${param.collectionId}(chart, tableData, init);
+        ws.onopen = function ()
+        {
+            console.log("Websocket for collection: " + collection + " connected");
+        };
+
+        ws.onmessage = function (data)
+        {
+            console.log("Received data for collection: " + collection);
+            console.log(data);
+            if (!$('#doPause')[0].checked) {
+                load_data_and_draw_collection();
             }
-        });
-    }
+        };
 
-    function load_data_for_all_nodes() {
-        nodes.forEach(function (node) {
-            load_data_and_draw_node(node);
-        });
-    }
-
-
-
+        ws.onclose = function ()
+        {
+            console.log("Websocket for collection: " + collection + " closed");
+        };
+        load_data_and_draw_collection();
+        
+    });
 </script>
-
-<div id="gauges-${collectionId}"/>
+<div class="col-md-12">
+    <div id="gauges_div_${param.collectionId}"></div>
+</div>

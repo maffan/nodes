@@ -1,4 +1,4 @@
-google.charts.load('current', {packages: ['gauge', 'line', 'table']});
+google.charts.load('current', {packages: ['corechart', 'gauge', 'line', 'table']});
 google.charts.setOnLoadCallback(initiateCharts);
 
 
