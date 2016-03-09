@@ -1,5 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<c:set var="res" value="${pageContext.request.contextPath}/resources" />
+<script type="text/javascript" src="${res}/js/user.js"></script>
+
 <div class="row">
     <div class="dropdown pull-left">
         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
