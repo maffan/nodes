@@ -18,7 +18,8 @@ import services.UserService;
 
 /**
  *
- * @author Marcus
+ * Servlet for registering new users. Serves up login page and processes 
+ * results.
  */
 @WebServlet(name = "RegisterServlet", urlPatterns = {"/register"})
 public class RegisterServlet extends HttpServlet {
