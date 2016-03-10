@@ -5,8 +5,10 @@
     This templates iterates over the users active modules. For each module,
     the related JSP gets included and the necessary parameters gets injected.
 
-    All modules must put all executing code into the global startupFunctions 
-    object. This code will be executed once all dependencies (for example google
+    Modules are stored in the WEB-INF/modules folder.
+
+    All modules must put all initiation code into the global startupFunctions 
+    object. This code will be executed by 'user.js' once all dependencies (for example google
     charts ) have been loaded.
 
     Ex. example_module.jsp
