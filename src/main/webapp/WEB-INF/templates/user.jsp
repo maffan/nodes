@@ -6,7 +6,15 @@
     the related JSP gets included and the necessary parameters gets injected.
 
     All modules must put all executing code into the global startupFunctions 
-    object.
+    object. This code will be executed once all dependencies (for example google
+    charts ) have been loaded.
+
+    Ex. example_module.jsp
+    <script>
+        startupFunctions.push(function(){
+            //Do stuff
+        })
+    </script>
 -->
 <script>var startupFunctions = [];</script>
 
