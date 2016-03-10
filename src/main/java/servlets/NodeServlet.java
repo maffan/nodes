@@ -8,7 +8,6 @@ package servlets;
 import entities.Collection;
 import entities.Node;
 import entities.NodePK;
-import entities.User;
 import filters.HomeRouter;
 import java.io.IOException;
 import java.util.List;
@@ -26,7 +25,8 @@ import services.UserService;
 
 /**
  *
- * @author Marcus
+ * Servlet for returning nodes page and adding/removing nodes/collections.
+ * Also add/remove nodes to/from collections.
  */
 @WebServlet(name = "NodeServlet", urlPatterns = {"/nodes"})
 public class NodeServlet extends HttpServlet {
