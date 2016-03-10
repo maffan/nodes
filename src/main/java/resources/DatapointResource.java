@@ -58,9 +58,9 @@ public class DatapointResource extends DAO<Datapoint, DatapointPK> {
         super(Datapoint.class);
     }
     /*
-    Helping function for getting a date some hours in the past or future
+    Helping function for getting a date some hours in the past
     */
-    private Date getCorrectedDate(Date now, int hours) {
+    private Date getPastDate(Date now, int hours) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(now);
         calendar.add(Calendar.HOUR, -hours);
@@ -122,7 +122,7 @@ public class DatapointResource extends DAO<Datapoint, DatapointPK> {
         Node fetchedNode = nodeService.find(new NodePK(node, owner));
         if (fetchedNode != null) {
             Date now = new Date();
-            Date past = getCorrectedDate(now, hours);
+            Date past = getPastDate(now, hours);
             return datapointService.getForNodeBetweenDates(fetchedNode, past, now);
         } else {
             return new ArrayList();
@@ -153,7 +153,7 @@ public class DatapointResource extends DAO<Datapoint, DatapointPK> {
     public String getAverageValueForCollection(@PathParam("collectionId") int collectionId, @PathParam("hours") int hours) {
         Collection collection = collectionService.find(collectionId);
         Date now = new Date();
-        Date past = getCorrectedDate(now, hours);
+        Date past = getPastDate(now, hours);
         if (collection == null) {
             return "false";
         }
@@ -213,7 +213,7 @@ public class DatapointResource extends DAO<Datapoint, DatapointPK> {
         Node fetchedNode = nodeService.find(new NodePK(node, owner));
         if (fetchedNode != null) {
             Date now = new Date();
-            Date past = getCorrectedDate(now, hours);
+            Date past = getPastDate(now, hours);
             return String.format("%.2f", datapointService.getAverageForNode(fetchedNode, past, now));
         } else {
             return "false";
@@ -244,7 +244,7 @@ public class DatapointResource extends DAO<Datapoint, DatapointPK> {
     public String getMaxForNode(@PathParam("owner") String owner, @PathParam("node") String node, @PathParam("hours") int hours) {
         Node fetchedNode = nodeService.find(new NodePK(node, owner));
         Date now = new Date();
-        Date past = getCorrectedDate(now, hours);
+        Date past = getPastDate(now, hours);
         if (fetchedNode != null) {
             return String.format("%d", datapointService.getMaxForNode(fetchedNode, past, now));
         } else {
@@ -276,7 +276,7 @@ public class DatapointResource extends DAO<Datapoint, DatapointPK> {
     public String getMinForNode(@PathParam("owner") String owner, @PathParam("node") String node, @PathParam("hours") int hours) {
         Node fetchedNode = nodeService.find(new NodePK(node, owner));
         Date now = new Date();
-        Date past = getCorrectedDate(now, hours);
+        Date past = getPastDate(now, hours);
         if (fetchedNode != null) {
             return String.format("%d", datapointService.getMinForNode(fetchedNode, past, now));
         } else {
