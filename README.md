@@ -9,7 +9,7 @@ Nodes is built on Java EE running on Glassfish 4.1. Postgres is used as relation
 # Getting started
 After your instance of nodes is running register a new user from the register page.  
 
-When logged in you can manage you can go to your profile settings and generate an API key, this is needed for your temperature nodes API calls.  
+When logged in you can manage your profile settings and generate an API key, this is needed for your temperature nodes API calls.  
   
 Each user manages his or her own nodes and collections, you need to create a node before reporting data to Nodes, from the Nodes page you can create nodes and collections and connect them together. This to enable modules to be added and display your data.  
   
@@ -21,4 +21,15 @@ From the front page either click Edit modules or to do Modules in de navigation.
 3, Create one or several collections and add your nodes to them  
 4, Go to Modules and add modules to display your collection data
 5, Set up your temperature node to report data to the API and watch data be updated on your front page in realtime!
+
+# API
+New data is to be send to:
+URL: http://NODESURL/datapoint
+Content-Type: application/json
+METHOD: POST
+HEADERS: 
+    Owner: USERNAME,
+    APIKey: GENERATED FROM PROFILE SETTINGS
+BODY: { 'data': NEW VALUE, 'NodePK':{'owner': USERNAME, 'node': NODENAME}}
+
 
