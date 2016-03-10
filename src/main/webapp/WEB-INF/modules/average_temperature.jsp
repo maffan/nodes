@@ -68,5 +68,5 @@
         
     });
 </script>
-<div id="gauges_div_${param.collectionId}"></div>
+<div class='col-md-offset-4' id="gauges_div_${param.collectionId}"></div>
 

@@ -5,8 +5,28 @@
     This templates iterates over the users active modules. For each module,
     the related JSP gets included and the necessary parameters gets injected.
 
-    All modules must put all executing code into the global startupFunctions 
-    object.
+    Modules are stored in the WEB-INF/modules folder.
+
+    All modules must put all initiation code into the global startupFunctions 
+    object. This code will be executed by 'user.js' once all dependencies (for example google
+    charts ) have been loaded.
+
+    Ex. example_module.jsp
+    <script>
+        startupFunctions.push(function(){
+            //Do stuff
+        })
+    </script>
+
+    Modules should also listen to the global hidden 'doPause' value and stop redrawing
+    when page is paused.
+
+    Ex. example_module.jsp
+    <script>
+        if ($('#doPause').val() == 'false'){
+                    //Do redrawing stuff
+                }
+    </script>
 -->
 <script>var startupFunctions = [];</script>
 

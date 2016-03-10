@@ -1,5 +1,14 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!--
+    Main template for web site. Includes a child JSP based on provided partial
+    parameter.
+
+    Used for all pages except for login page.
+
+    All child JSPs of this template will have access to a {user} object pointing
+    to the currently logged in enteties.User object.
+-->
 <!DOCTYPE html>
 <html>
     <head> 
@@ -16,6 +25,8 @@
         <link rel="stylesheet" type="text/css" href="${res}/css/custom.css" />
         <link rel="icon" type="image/png" href="${res}/img/favicon.png">
     </head>
+    <!--    Height of container is statically set in order to mitigate
+            window resize when diagrams gets dynamically redrawn    -->
     <body class="container" style="height: 2000px; overflow: auto">
         <c:set var="root" value="${pageContext.request.contextPath}" />
         <nav class="navbar navbar-default" role="navigation">
