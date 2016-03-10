@@ -16,7 +16,8 @@ import javax.websocket.server.PathParam;
 
 /**
  *
- * @author flycktm
+ * Connection endpoint for websockets needing information about data for a 
+ * single node.
  */
 @ServerEndpoint("/websocket/{owner}/{node}")
 @ApplicationScoped
