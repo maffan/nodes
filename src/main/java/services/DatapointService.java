@@ -4,17 +4,14 @@ import entities.Collection;
 import entities.Datapoint;
 import entities.DatapointPK;
 import entities.Node;
-import entities.NodePK;
 import entities.User;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Stream;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import persistence.DAO;
 

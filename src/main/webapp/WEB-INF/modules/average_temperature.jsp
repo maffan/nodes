@@ -1,4 +1,17 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!--
+    This module draws a gauge showing the average temperature for a collection
+    of nodes.
+
+    Variables available:
+        user:                   The currently logged in entities.User object
+        param.collectionId:     The Id number of the collection related to this 
+                                module instance
+        param.resolution:       The amount of hours in the past to show data for.
+        param.moduleUser:       The owner of this module instance
+        param.moduleNodeList:   A json-formated string containing all the 
+                                names of the nodes in the collection/module.
+-->
 <script>
     startupFunctions.push(function () {
         var collection = ${param.collectionId};

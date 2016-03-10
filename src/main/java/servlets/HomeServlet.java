@@ -5,32 +5,21 @@
  */
 package servlets;
 
-import entities.Node;
-import entities.User;
 import filters.HomeRouter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
-import java.util.Random;
-import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import services.NodeService;
-import services.UserService;
 
 /**
  *
- * @author Marcus
+ * Simple servlet redirecting the request to the user jsp
  */
 @WebServlet(name = "HomeServlet", urlPatterns = {"/home"})
 public class HomeServlet extends HttpServlet {
-@Inject
-UserService userService;
-@Inject
-NodeService nodeService;
+
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
