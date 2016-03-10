@@ -8,7 +8,6 @@ package servlets;
 import entities.User;
 import filters.HomeRouter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,7 +19,8 @@ import services.UserService;
 
 /**
  *
- * @author Marcus
+ * Servlet for handling user settings. Serves up settings page and processes 
+ * results
  */
 @WebServlet(name = "SettingsServlet", urlPatterns = {"/settings"})
 public class SettingsServlet extends HttpServlet {
