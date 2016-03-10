@@ -21,7 +21,9 @@ import services.UserService;
 
 /**
  *
- * @author flycktm
+ * Authorization filter for RESTful requests
+ * 
+ * All requests must contain a valid username and user related API-key
  */
 @WebFilter(filterName = "RestFilter", urlPatterns = {"/webresources/*"})
 public class RestFilter implements Filter {
