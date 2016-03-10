@@ -22,7 +22,8 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Marcus
+ * Checks that a valid session is in place. If not, the user gets redirected to
+ * a login page.
  */
 @WebFilter(filterName = "AuthorizationFilter", urlPatterns = {"/home"})
 public class AuthorizationFilter implements Filter {
@@ -37,13 +38,13 @@ public class AuthorizationFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         HttpSession session = httpRequest.getSession();
-        String uri = httpRequest.getRequestURI();
-        if(session.getAttribute("user") == null && !uri.endsWith("login")){ //User is not logged in
-            session.setAttribute("destination", uri);
+        String intendedDestination = httpRequest.getRequestURI();
+        if(session.getAttribute("user") == null && !intendedDestination.endsWith("login")){ //User is not logged in
+            session.setAttribute("destination", intendedDestination);
             httpResponse.sendRedirect("login");
         }
         else{ //User is logged in
-            if(uri.endsWith("login"))
+            if(intendedDestination.endsWith("login"))
                 httpResponse.sendRedirect("home");
             else
                 chain.doFilter(request, response);
