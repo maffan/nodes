@@ -8,7 +8,6 @@ package servlets;
 import entities.User;
 import filters.HomeRouter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,19 +19,26 @@ import services.UserService;
 
 /**
  *
- * @author Marcus
+ * Servlet for handling logging in a user.
  */
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
     @Inject
     UserService userService;
 
+    /*
+    * Returns the login page
+    */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.getRequestDispatcher(HomeRouter.TEMPLATE + "?partial=login").forward(request, response);
     }
 
+    /*
+    * Checks user credentials and either redirects beck to login page or
+    * forwards to home page. Follows PRG-pattern
+    */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
