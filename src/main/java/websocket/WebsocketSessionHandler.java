@@ -6,18 +6,21 @@
 package websocket;
 
 import entities.Collection;
-import entities.DatapointPK;
 import entities.Node;
 import entities.NodePK;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
 import javax.websocket.Session;
 
+/*
+An application scoped class for handling all messages being sent to connected
+websockets.
+
+Sessions can be related to a specifik node or collection
+*/
 @ApplicationScoped
 public class WebsocketSessionHandler {
     private final Map<NodePK,List<Session>> nodeSessions;
@@ -27,7 +30,9 @@ public class WebsocketSessionHandler {
         this.nodeSessions = new HashMap<>();
         this.collectionSessions = new HashMap<>();
     }
-    
+    /*
+    Relates a session to a Node
+    */
     public void addSession(Session session, String owner, String node){
         NodePK nodeKey = new NodePK(node, owner);
        if(nodeSessions.containsKey(nodeKey)){
@@ -39,7 +44,9 @@ public class WebsocketSessionHandler {
             nodeSessions.put(nodeKey, sessionList);
         }
     }
-    
+    /*
+    Relates a session to a collection
+    */
     public void addSession(Session session, int collectionId){
        if(collectionSessions.containsKey(collectionId)){
             collectionSessions.get(collectionId).add(session);
@@ -64,6 +71,10 @@ public class WebsocketSessionHandler {
         }
     }
 
+    /*
+    Sends a simple message to all sessions related to the node or a collection
+    containing the node.
+    */
     public void messageAll(Node node) {
         if(nodeSessions.containsKey(node.getNodePK())){
             for(Session session : nodeSessions.get(node.getNodePK())){
