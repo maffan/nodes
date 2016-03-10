@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Marcus
+ * Filter allows "/" to be redirected to "/home"
  */
 @WebFilter(filterName = "Router", urlPatterns = {"/*"})
 public class HomeRouter implements Filter {
