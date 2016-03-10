@@ -8,14 +8,12 @@ package servlets;
 import entities.User;
 import filters.HomeRouter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import services.UserService;
 
 /**
@@ -45,7 +43,8 @@ public class RegisterServlet extends HttpServlet {
             response.sendRedirect("register?failed=true");
         } 
         else if (!checkIfTaken(username, phone)){
-            register(username, password, name, phone);
+            User user = register(username, password, name, phone);
+            request.getSession().setAttribute("user", user);
             response.sendRedirect("home");
         }
         else{
@@ -53,7 +52,7 @@ public class RegisterServlet extends HttpServlet {
         }
     }
 
-    private void register(String username, String password, String name, String phone) {
+    private User register(String username, String password, String name, String phone) {
         User user = new User();
         user.setMail(username);
         user.setName(name);
@@ -61,6 +60,7 @@ public class RegisterServlet extends HttpServlet {
         user.setPhone(phone);
         
         userService.create(user);
+        return user;
     }
 
     private boolean checkIfTaken(String username, String phone) {
