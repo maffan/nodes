@@ -17,6 +17,16 @@
             //Do stuff
         })
     </script>
+
+    Modules should also listen to the global hidden 'doPause' value and stop redrawing
+    when page is paused.
+
+    Ex. example_module.jsp
+    <script>
+        if ($('#doPause').val() == 'false'){
+                    //Do redrawing stuff
+                }
+    </script>
 -->
 <script>var startupFunctions = [];</script>
 
