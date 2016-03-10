@@ -15,13 +15,15 @@
     startupFunctions.push(function () {
         var nodes = ${param.moduleNodeList} 
         $('#graph_div_${param.collectionId}').css("height", 200*nodes.length);
+        
+        // One div needed for each graph
         nodes.forEach(function (node) {
             var div = document.createElement('div');
             div.id = "graph_div_${param.collectionId}_" + node;
             $('#graph_div_${param.collectionId}').append(div);
         });
 
-
+        //Relates each node with a websocket
         nodes.forEach(function (node) {
             var ws = new WebSocket("ws://localhost:8080/nodes/websocket/${param.moduleUser}/" + node);
             ws.chart = new google.charts.Line(document.getElementById("graph_div_${param.collectionId}_" + node));
