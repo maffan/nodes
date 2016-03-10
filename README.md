@@ -1,5 +1,6 @@
-# Nodes
-
+# Nodes  
+An application written for DAT076 by Tobias Edvardsson and Marcus Flyckt  
+  
 # Description
 Nodes is a web application built to give users the ability to send temperature data from their temperature nodes to a simple API and display the results in an intuitive way.  
   
