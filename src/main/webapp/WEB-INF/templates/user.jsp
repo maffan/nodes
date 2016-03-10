@@ -1,6 +1,13 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var="res" value="${pageContext.request.contextPath}/resources" />
+<!--
+    This templates iterates over the users active modules. For each module,
+    the related JSP gets included and the necessary parameters gets injected.
+
+    All modules must put all executing code into the global startupFunctions 
+    object.
+-->
 <script>var startupFunctions = [];</script>
 
 <div class="row pad">
