@@ -7,7 +7,6 @@ package servlets;
 
 import entities.Collection;
 import entities.Module;
-import entities.User;
 import filters.HomeRouter;
 import java.io.IOException;
 import java.util.List;
@@ -24,7 +23,8 @@ import services.UserService;
 
 /**
  *
- * @author Marcus
+ * Servlet for returning modules page and adding/removing modules to/from
+ * collections.
  */
 @WebServlet(name = "ModuleServlet", urlPatterns = {"/modules"})
 public class ModuleServlet extends HttpServlet {
