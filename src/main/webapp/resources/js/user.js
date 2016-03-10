@@ -1,6 +1,6 @@
 google.charts.load('current', {packages: ['corechart', 'gauge', 'line', 'table']});
 google.charts.setOnLoadCallback(initiateCharts);
-
+// Steps through and executes all startup functions
 function initiateCharts(){
     startupFunctions.forEach(function(fun){
        fun(); 
