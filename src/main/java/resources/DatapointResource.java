@@ -31,13 +31,13 @@ import services.DatapointService;
 import services.NodeService;
 import websocket.WebsocketSessionHandler;
 
-/**
- *
- * @author flycktm
- */
 @Stateless
 @Path("datapoint")
-public class DatapointFacadeREST extends DAO<Datapoint, DatapointPK> {
+public class DatapointResource extends DAO<Datapoint, DatapointPK> {
+    /*
+    The dafault amount of datapoints to return when no timeframe is given
+    */
+    private static final int DEFAULT_AMOUNT = 100;
 
     @PersistenceContext(unitName = "se.nomorebagels_nodes_war_1.0-SNAPSHOTPU")
     private EntityManager entityManager;
@@ -54,10 +54,23 @@ public class DatapointFacadeREST extends DAO<Datapoint, DatapointPK> {
     @Inject
     private WebsocketSessionHandler sessionHandler;
 
-    public DatapointFacadeREST() {
+    public DatapointResource() {
         super(Datapoint.class);
     }
+    /*
+    Helping function for getting a date some hours in the past or future
+    */
+    private Date getCorrectedDate(Date now, int hours) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(now);
+        calendar.add(Calendar.HOUR, -hours);
+        Date past = calendar.getTime();
+        return past;
+    }
 
+    /*
+    Used by external nodes to report in new values
+    */
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     public void create(Datapoint entity) {
@@ -67,6 +80,9 @@ public class DatapointFacadeREST extends DAO<Datapoint, DatapointPK> {
         sessionHandler.messageAll(nodeService.find(nodePK));
     }
 
+    /*
+    Returns the default amount of latest datapoints for a node. 
+    */
     @GET
     @Path("{owner}/{node}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -74,12 +90,15 @@ public class DatapointFacadeREST extends DAO<Datapoint, DatapointPK> {
 
         Node fetchedNode = nodeService.find(new NodePK(node, owner));
         if (fetchedNode != null) {
-            return datapointService.getLatestForNode(fetchedNode, 100, true);
+            return datapointService.getLatestForNode(fetchedNode, DEFAULT_AMOUNT, true);
         } else {
             return new ArrayList();
         }
     }
     
+    /*
+    Returns the latest reported data from a single node as a single value
+    */
     @GET
     @Path("{owner}/{node}/latest")
     @Produces({MediaType.APPLICATION_JSON})
@@ -93,10 +112,13 @@ public class DatapointFacadeREST extends DAO<Datapoint, DatapointPK> {
         }
     }
 
+    /*
+    Returns all data reported by a node during a given timeframe
+    */
     @GET
     @Path("{owner}/{node}/{hours}")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<Datapoint> findLastDaysForNode(@PathParam("owner") String owner, @PathParam("node") String node, @PathParam("hours") int hours) {
+    public List<Datapoint> findLastHoursForNode(@PathParam("owner") String owner, @PathParam("node") String node, @PathParam("hours") int hours) {
         Node fetchedNode = nodeService.find(new NodePK(node, owner));
         if (fetchedNode != null) {
             Date now = new Date();
@@ -107,14 +129,10 @@ public class DatapointFacadeREST extends DAO<Datapoint, DatapointPK> {
         }
     }
 
-    private Date getCorrectedDate(Date now, int hours) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(now);
-        calendar.add(Calendar.HOUR, -hours);
-        Date past = calendar.getTime();
-        return past;
-    }
-
+    
+    /*
+    Returns the aggregated average value for a collection of nodes
+    */
     @GET
     @Path("collection/{collectionId}/average")
     @Produces({MediaType.APPLICATION_JSON})
@@ -123,9 +141,12 @@ public class DatapointFacadeREST extends DAO<Datapoint, DatapointPK> {
         if (collection == null) {
             return "false";
         }
-        return String.format("%.2f", datapointService.getAverageForCollection(collection, 100));
+        return String.format("%.2f", datapointService.getAverageForCollection(collection, DEFAULT_AMOUNT));
     }
     
+    /*
+    Returns the aggregated average value for a collection of nodes during a given timeframe
+    */
     @GET
     @Path("collection/{collectionId}/average/{hours}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -139,6 +160,9 @@ public class DatapointFacadeREST extends DAO<Datapoint, DatapointPK> {
         return String.format("%.2f", datapointService.getAverageForCollection(collection, past, now));
     }
 
+    /*
+    Returns the maximum value reported by any node in a collection
+    */
     @GET
     @Path("collection/{collectionId}/max")
     @Produces({MediaType.APPLICATION_JSON})
@@ -147,9 +171,12 @@ public class DatapointFacadeREST extends DAO<Datapoint, DatapointPK> {
         if (collection == null) {
             return "false";
         }
-        return String.format("%d", datapointService.getMaxForCollection(collection, 100));
+        return String.format("%d", datapointService.getMaxForCollection(collection, DEFAULT_AMOUNT));
     }
 
+    /*
+    Returns the minimum value reported by any node in a collection
+    */
     @GET
     @Path("collection/{collectionId}/min")
     @Produces({MediaType.APPLICATION_JSON})
@@ -158,21 +185,27 @@ public class DatapointFacadeREST extends DAO<Datapoint, DatapointPK> {
         if (collection == null) {
             return "false";
         }
-        return String.format("%d", datapointService.getMinForCollection(collection, 100));
+        return String.format("%d", datapointService.getMinForCollection(collection, DEFAULT_AMOUNT));
     }
-
+    
+    /*
+    Returns the average value for all data reported by a node
+    */
     @GET
     @Path("{owner}/{node}/average")
     @Produces({MediaType.APPLICATION_JSON})
     public String getAverageForNode(@PathParam("owner") String owner, @PathParam("node") String node) {
         Node fetchedNode = nodeService.find(new NodePK(node, owner));
         if (fetchedNode != null) {
-            return String.format("%.2f", datapointService.getAverageForNode(fetchedNode, 100));
+            return String.format("%.2f", datapointService.getAverageForNode(fetchedNode, DEFAULT_AMOUNT));
         } else {
             return "false";
         }
     }
     
+    /*
+    Returns the average value for all data reported by a node during a given timeframe
+    */
     @GET
     @Path("{owner}/{node}/average/{hours}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -186,19 +219,25 @@ public class DatapointFacadeREST extends DAO<Datapoint, DatapointPK> {
             return "false";
         }
     }
-
+    
+    /*
+    Returns the maximum value reported in by a node
+    */
     @GET
     @Path("{owner}/{node}/max")
     @Produces({MediaType.APPLICATION_JSON})
     public String getMaxForNode(@PathParam("owner") String owner, @PathParam("node") String node) {
         Node fetchedNode = nodeService.find(new NodePK(node, owner));
         if (fetchedNode != null) {
-            return String.format("%d", datapointService.getMaxForNode(fetchedNode, 100));
+            return String.format("%d", datapointService.getMaxForNode(fetchedNode, DEFAULT_AMOUNT));
         } else {
             return "false";
         }
     }
     
+    /*
+    Returns the maximum value reported in by a node during a given timeframe
+    */
     @GET
     @Path("{owner}/{node}/max/{hours}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -213,18 +252,24 @@ public class DatapointFacadeREST extends DAO<Datapoint, DatapointPK> {
         }
     }
 
+    /*
+    Return the minimum value reported in by a node
+    */
     @GET
     @Path("{owner}/{node}/min")
     @Produces({MediaType.APPLICATION_JSON})
     public String getMinForNode(@PathParam("owner") String owner, @PathParam("node") String node) {
         Node fetchedNode = nodeService.find(new NodePK(node, owner));
         if (fetchedNode != null) {
-            return String.format("%d", datapointService.getMinForNode(fetchedNode, 100));
+            return String.format("%d", datapointService.getMinForNode(fetchedNode, DEFAULT_AMOUNT));
         } else {
             return "false";
         }
     }
     
+    /*
+    Return the minimum value reported in by a node during a given timeframe
+    */
     @GET
     @Path("{owner}/{node}/min/{hours}")
     @Produces({MediaType.APPLICATION_JSON})
