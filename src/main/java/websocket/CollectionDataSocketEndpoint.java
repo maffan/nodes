@@ -14,6 +14,10 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
+/*
+* Connection endpoint for websockets needing information about data in 
+* collections.
+*/
 @ServerEndpoint("/websocket/collection/{collectionId}")
 @ApplicationScoped
 public class CollectionDataSocketEndpoint {
