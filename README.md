@@ -4,6 +4,15 @@ An application written for DAT076 by Tobias Edvardsson and Marcus Flyckt
 # Description
 Nodes is a web application built to give users the ability to send temperature data from their temperature nodes to a simple API and display the results in an intuitive way.  
   
+# Descriptions for DAT076 Teachers/Assistants
+In order to see our application in action, just follow these steps.
+
+1. Build the maven project and deploy on a Glassfish 4.1 server. Make sure the application runs as http://localhost:8080/nodes
+2. Login as user 'admin' with password 'admin'
+3. You should see some modules with data
+4. In order to see realtime data, run the Python script 'nodesimulator.py' found in the 'nodes/python' folder. It depends on the 'requests' package. This script simulates nodes reporting values to the admin nodes with the pre generated admin api key.
+5. Feel free to look around!
+
 # Technical
 Nodes is built on Java EE running on Glassfish 4.1. Postgres is used as relational database system.  
   
